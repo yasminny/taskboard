@@ -1,0 +1,20 @@
+{
+  "name": "taskboard",
+  "version": "1.0.0",
+  "description": "FED Bootcamp 2nd project - WebApp",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CreateBootcamp/taskboard.git"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CreateBootcamp/taskboard/issues"
+  },
+  "homepage": "https://github.com/CreateBootcamp/taskboard#readme",
+  "dependencies": {
+    "bootstrap": "3.3.7"
+  }
+}
