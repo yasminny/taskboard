@@ -36,22 +36,23 @@ html {
 }
 
 main{
-  height: 95%;
+  height: 100%;
   display: inline-flex;
   overflow-x: auto;
   overflow-y: hidden;
   flex-wrap: nowrap;
   width: auto;
   align-items: flex-start;
-  align-self: flex-start;
-  margin-top: 70px;
+  margin-top: 51px;
+  padding-top: 20px;
+
 }
 
 .inside-list{
   position: relative;
   width: 300px;
   height: initial;
-  max-height: 93%;
+  max-height: 100%;
   padding-top: 50px;
   margin: 0 20px;
 }
@@ -61,15 +62,15 @@ main{
   display: flex;
   max-height: 72vh;
   height: initial;
-  overflow-y: auto;
-  overflow-x: hidden;
   flex-wrap: wrap;
   margin-bottom: 50px;
 }
 
 .list ul {
-  max-height: 90%;
-
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 30px;
 }
 
 .list-header{
@@ -93,11 +94,8 @@ main{
 .add-card{
   width: 100%;
   height: 50px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  margin-top: 50px;
   border: 1px solid #ddd;
+  text-align: left;
 }
 
 .add-list{
@@ -109,4 +107,20 @@ main{
   background-color: #d9edf7;
   border-color: #bce8f1;
   margin: 0 20px;
+}
+
+@media (min-width: 0) {
+  /* Effects the problem regarding the float under 768px, fixes that. */
+  .navbar-nav  li {
+    float: left;
+  }
+  /* Effects the box around the board selected box so it will be the same as above 768px. */
+  .navbar-nav a {
+    padding: 15px;
+  }
+  /* Effects the board and members under 768px, gets them inline. */
+  .navbar-nav {
+    margin-bottom: 0;
+    margin-top: 0;
+  }
 }
