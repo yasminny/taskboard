@@ -48,22 +48,15 @@ main{
 
 }
 
-.inside-list{
-  position: relative;
-  width: 300px;
-  height: initial;
-  max-height: 100%;
-  padding-top: 50px;
-  margin: 0 20px;
-}
-
 .list{
+  position: relative;
+  padding-top: 50px;
   width: 300px;
   display: flex;
-  max-height: 72vh;
+  max-height: 82vh;
   height: initial;
   flex-wrap: wrap;
-  margin-bottom: 50px;
+  margin: 0 20px 50px 20px;
 }
 
 .list ul {
@@ -81,6 +74,15 @@ main{
   display: block;
   width: 100%;
   border: 1px solid #ddd;
+  text-align: left;
+}
+
+.list-header h3{
+  display: inline-block;
+}
+
+.list-header input{
+  display: none;
 }
 
 .card{
