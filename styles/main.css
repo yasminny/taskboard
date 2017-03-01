@@ -111,24 +111,22 @@ main{
   margin: 0 20px;
 }
 
-.edit-arrow{
-  border: none;
+.dropdown {
   float: right;
 }
 
-.dropdown-edit-list-menu{
-  display: none;
-  position: absolute;
-  top: 47px;
-  left: 166px;
+.dropdown-menu {
+  left: -365%;
 }
 
-.delete-list{
-  text-align: center;
-  padding: 5%;
-  display: inline-block;
-  width: 131px;
+.edit-card{
+  display: none;
 }
+
+.card:hover > .edit-card{
+  display: inline-block;
+}
+
 
 @media (min-width: 0) {
   /* Effects the problem regarding the float under 768px, fixes that. */

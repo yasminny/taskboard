@@ -14,21 +14,27 @@ function addEventToAddCard() {
 }
 
 function addCard() {
-  console.log(event);
   let ulElm = event.target.parentNode.querySelector('.card-list');
   ulElm.innerHTML += `<li class="card"></li>`;
 }
 
 const listTemplate = `<div class="list panel panel-default">
-  <button class="list-header panel-heading"><h3 class="panel-title">New List</h3><input type="text"><span class="edit-arrow glyphicon glyphicon-triangle-bottom"></span>
-  <ul class="dropdown-edit-list-menu">
-          <li class="delete-list glyphicon glyphicon-trash" type="button">     Delete List</li>
-        </ul></button>
-  <ul>
+      <div class="list-header panel-heading">
+        <h3 class="panel-title" >New List</h3>
+        <input type="text">
+        <div class="dropdown">
+          <button class="list-arrow btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <li class="delete-list"><a href="#">Delete List</a></li>
+          </ul>
+        </div>
+      </div>
+  <ul class="card-list">
   </ul>
   <button class="card-btn add-card panel-footer">Add a card...</button>
 </div>`;
-
 
 function addList() {
   addListBtn = document.getElementById('list-btn');
@@ -87,9 +93,9 @@ function initListTitles(targetList) {
     titleInput.addEventListener('blur', titleInputBlurHandler);
   }
 
-  const titleEditElem = targetParent.querySelectorAll('.edit-arrow');
+  const titleEditElem = targetParent.querySelectorAll('.list-arrow');
   for (const titleEdit of titleEditElem) {
-    titleEdit.addEventListener('click', titleEditClickHandler);
+    titleEdit.addEventListener('click', titleDeleteClickHandler);
   }
 
   const EditBtnElem = targetParent.querySelectorAll('.delete-list');
@@ -97,13 +103,18 @@ function initListTitles(targetList) {
     EditBtn.addEventListener('click', deleteListHandler);
   }
 
+  const EditCardElem = targetParent.querySelector('.edit-card');
+  for (const EditCard of EditCardElem) {
+    EditBtn.addEventListener('click', editCardHandler);
+  }
+
 }
 
 initListTitles();
 
-function titleEditClickHandler() {
+function titleDeleteClickHandler() {
   const target = event.target;
-  const editElm = target.parentNode.querySelector('.dropdown-edit-list-menu');
+  const editElm = target.closest('.dropdown').querySelector('.dropdown-menu');
   editElm.style.display = 'inline-block';
   const parentElm = target.parentNode;
   parentElm.blur();
@@ -112,16 +123,21 @@ function titleEditClickHandler() {
 
 function deleteListHandler() {
   const target = event.target;
-  const titleElm = target.parentNode.parentNode.querySelector('h3');
+  const titleElm = target.closest('.list-header').querySelector('h3');
 const listName = titleElm.innerHTML;
   let answer = confirm(`Deleting ${listName} list. Are you sure?`);
 
-  const listElm = target.parentNode.parentNode.parentNode;
+  const listElm = target.closest('.list');
   console.log(target.parentNode.parentNode.parentNode);
   if (answer){
 listElm.parentNode.removeChild(listElm);
   } else {
-const editElm = listElm.querySelector('.dropdown-edit-list-menu');
+const editElm = listElm.querySelector('.dropdown-menu');
     editElm.style.display = 'none';
   }
+  console.log(editElm);
+}
+
+function editCardHandler() {
+
 }
