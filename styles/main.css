@@ -59,7 +59,7 @@ main{
   margin: 0 20px 50px 20px;
 }
 
-.list ul {
+.card-list {
   max-height: 70vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -78,7 +78,7 @@ main{
 }
 
 .list-header h3{
-  display: inline-block;
+  display: inline-flex;
 }
 
 .list-header input{
@@ -109,6 +109,25 @@ main{
   background-color: #d9edf7;
   border-color: #bce8f1;
   margin: 0 20px;
+}
+
+.edit-arrow{
+  border: none;
+  float: right;
+}
+
+.dropdown-edit-list-menu{
+  display: none;
+  position: absolute;
+  top: 47px;
+  left: 166px;
+}
+
+.delete-list{
+  text-align: center;
+  padding: 5%;
+  display: inline-block;
+  width: 131px;
 }
 
 @media (min-width: 0) {
