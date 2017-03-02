@@ -43,20 +43,20 @@ main{
   flex-wrap: nowrap;
   width: auto;
   align-items: flex-start;
-  margin-top: 51px;
+  margin: 51px 10px 0 10px;
   padding-top: 20px;
 
 }
 
 .list{
   position: relative;
-  padding-top: 50px;
-  width: 300px;
+  padding-top: 36px;
+  width: 255px;
   display: flex;
   max-height: 82vh;
   height: initial;
   flex-wrap: wrap;
-  margin: 0 20px 50px 20px;
+  margin: 0 10px 0 20px;
 }
 
 .card-list {
@@ -64,33 +64,44 @@ main{
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 30px;
+  margin-top: -9px;
 }
 
 .list-header{
   position: absolute;
   top: 0;
   left: 0;
-  height: 50px;
+  height: 42px;
   display: block;
   width: 100%;
   border: 1px solid #ddd;
   text-align: left;
+  padding: 3px;
 }
 
 .list-header h3{
   display: inline-flex;
+  padding-top: 10px;
+  padding-left: 12px;
 }
 
 .list-header input{
   display: none;
+  padding-top: 10px;
+  margin-left: 12px;
 }
 
 .card{
-  width: 250px;
-  height: 200px;
-  display: flex;
-  margin: 20px 20px;
-  background-color: #5bc0de;
+  width: 204px;
+  min-height: 100px;
+  position: relative;
+  margin: 23px 10px;
+  background-color: white;
+  border: blue 1px solid;
+}
+
+.panel-body{
+  padding: 15px 13px;
 }
 
 .add-card{
@@ -98,17 +109,26 @@ main{
   height: 50px;
   border: 1px solid #ddd;
   text-align: left;
+  margin-top: -17px;
+  z-index: 10;
+}
+
+.add-card:hover{
+  background-color: #bfbfbf;
 }
 
 .add-list{
-  width: 300px;
+  width: 255px;
   position: relative;
   display: flex;
-  height: 50px;
+  height: 42px;
   color: #31708f;
   background-color: #d9edf7;
   border-color: #bce8f1;
-  margin: 0 20px;
+  margin: 0 10px;
+}
+.add-list:hover{
+  background-color: #96cde9;
 }
 
 .dropdown {
@@ -117,16 +137,41 @@ main{
 
 .dropdown-menu {
   left: -365%;
+  top: 112%;
 }
 
 .edit-card{
   display: none;
+  margin: 3px;
+  position: absolute;
+  top: 0;
+  left: 136px;
 }
 
 .card:hover > .edit-card{
   display: inline-block;
 }
 
+.card-content{
+  padding: 20px 15px;
+  margin-bottom: 21px;
+}
+
+.member-list-on-card{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 7px;
+}
+.member-inital-on-card{
+  display: inline-block;
+  margin: 5px;
+  padding: 5px;
+  font-weight: 800;
+  float: right;
+  cursor: default;
+}
 
 @media (min-width: 0) {
   /* Effects the problem regarding the float under 768px, fixes that. */

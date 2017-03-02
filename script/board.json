@@ -1,0 +1,105 @@
+{
+  "board": [
+    {
+      "title": "Backlog",
+      "tasks": [
+        {
+          "text": "Must attend a daily meeting every morning at 11:00.",
+          "members": [
+            "Alex Ilyaev",
+            "Dima Vishnevetsky"
+          ]
+        },
+        {
+          "text": "The daily standup meeting must not be longer than 15-20 minutes. We must use a stopwatch to limit every members update.",
+          "members": [
+            "Alex Ilyaev",
+            "Dima Vishnevetsky"
+          ]
+        },
+        {
+          "text": "This card does not have any memebers assigned to it :(\nShould we add some members here?\nMaybe Darth Vader or some other cool guy?",
+          "members": []
+        },
+        {
+          "text": "Must attend a daily meeting every morning at 11:00.",
+          "members": [
+            "Dima Vishnevetsky"
+          ]
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, eveniet sed sequi quo quis magni qui nisi quas est eligendi expedita nesciunt error voluptatem ipsa. Doloremque laudantium, minus dignissimos incidunt. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur culpa delectus, impedit ad maxime repudiandae distinctio, id ut molestias, consectetur laudantium itaque ratione et praesentium nulla provident excepturi natus eveniet!.",
+          "members": [
+            "Alex Ilyaev",
+            "Dima Vishnevetsky"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Todo",
+      "tasks": [
+        {
+          "text": "Wash the dishes",
+          "members": [
+            "Alex Ilyaev",
+            "Dima Vishnevetsky"
+          ]
+        },
+        {
+          "text": "Do the laundry",
+          "members": [
+            "Gil Tayar"
+          ]
+        },
+        {
+          "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, eveniet sed sequi quo quis magni qui nisi quas est eligendi expedita nesciunt error voluptatem ipsa. Doloremque laudantium, minus dignissimos incidunt. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur culpa delectus, impedit ad maxime repudiandae distinctio, id ut molestias, consectetur laudantium itaque ratione et praesentium nulla provident excepturi natus eveniet!",
+          "members": [
+            "Alex Ilyaev",
+            "Dima Vishnevetsky"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "In Progress",
+      "tasks": [
+        {
+          "text": "Practice!",
+          "members": []
+        }
+      ]
+    },
+    {
+      "title": "QA",
+      "tasks": [
+        {
+          "text": "Redesign Logo",
+          "members": [
+            "Alex Ilyaev"
+          ]
+        },
+        {
+          "text": "Bug: Blurring the list options dropdown does not close the drop down",
+          "members": [
+            "Gil Tayar",
+            "Dima Vishnevetsky"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Done",
+      "tasks": [
+        {
+          "text": "Code review",
+          "members": [
+            "Alex Ilyaev",
+            "Dima Vishnevetsky",
+            "Gil Tayar"
+          ]
+        }
+      ]
+    }
+  ]
+}
