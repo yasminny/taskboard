@@ -173,6 +173,19 @@ main{
   cursor: default;
 }
 
+.modal{
+  background-color: rgba(0, 0, 0, 0.5);
+
+}
+
+.modal-dialog{
+  margin: 25% auto;
+  width: 650px;
+}
+.panel-for-members{
+  width: 300px;
+}
+
 @media (min-width: 0) {
   /* Effects the problem regarding the float under 768px, fixes that. */
   .navbar-nav  li {

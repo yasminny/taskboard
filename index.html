@@ -27,106 +27,62 @@
   </header>
 
   <main>
-    <div class="list panel panel-default">
-      <div class="list-header panel-heading">
-        <h3 class="panel-title">Backlog</h3>
-        <input type="text" maxlength="30">
-        <div class="dropdown">
-          <button class="list-arrow btn btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li class="delete-list"><a href="#">Delete List</a></li>
-          </ul>
-        </div>
-      </div>
-      <div class="panel-body">
-      <ul class="card-list">
-        <li class="card">
-          <button type="button" class="edit-card btn btn-info btn-xs">Edit card</button>
-          <p class="card-content">must do this action task must do this action task must do this action task must do this action task must do this action task must do this action task must do this action task must do this action task</p>
-          <div class="member-list-on-card">
-            <span class="member-inital-on-card label label-primary" title="Full Name">NM</span>
-          <span class="member-inital-on-card label label-primary" title="Full Name">NM</span></div>
-        </li>
-        <li class="card">
-          <button type="button" class="edit-card btn btn-info btn-xs">Edit card</button>
-        </li>
-        <li class="card">
-          <button type="button" class="edit-card btn btn-info btn-xs">Edit card</button>
-          <p class="card-content">must do this action task</p>
-        </li>
-      </ul>
-      </div>
-      <button class="card-btn add-card panel-footer">Add a card...</button>
-    </div>
-    <!--<div class="list panel panel-default">-->
-    <!--<div class="list-header panel-heading">-->
-    <!--<h3 class="panel-title" >TODO</h3>-->
-    <!--<input type="text">-->
-    <!--<div class="dropdown">-->
-    <!--<button class="list-arrow btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
-    <!--<span class="caret"></span>-->
-    <!--</button>-->
-    <!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
-    <!--<li class="delete-list"><a href="#">Delete List</a></li>-->
-    <!--</ul>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<ul class="card-list">-->
-    <!--<li class="card"></li>-->
-    <!--</ul>-->
-    <!--<button class="card-btn add-card panel-footer">Add a card...</button>-->
-    <!--</div>-->
-    <!--<div class="list panel panel-default">-->
-    <!--<div class="list-header panel-heading">-->
-    <!--<h3 class="panel-title" >In Progress</h3>-->
-    <!--<input type="text">-->
-    <!--<div class="dropdown">-->
-    <!--<button class="list-arrow btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
-    <!--<span class="caret"></span>-->
-    <!--</button>-->
-    <!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
-    <!--<li class="delete-list"><a href="#">Delete List</a></li>-->
-    <!--</ul>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<ul class="card-list">-->
-    <!--<li class="card"></li>-->
-    <!--<li class="card"></li>-->
-    <!--</ul>-->
-    <!--<button class="card-btn add-card panel-footer">Add a card...</button>-->
-    <!--</div>-->
-    <!--<div class="list panel panel-default">-->
-    <!--<div class="list-header panel-heading">-->
-    <!--<h3 class="panel-title" >Done</h3>-->
-    <!--<input type="text">-->
-    <!--<div class="dropdown">-->
-    <!--<button class="list-arrow btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">-->
-    <!--<span class="caret"></span>-->
-    <!--</button>-->
-    <!--<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">-->
-    <!--<li class="delete-list"><a href="#">Delete List</a></li>-->
-    <!--</ul>-->
-    <!--</div>-->
-    <!--</div>-->
-    <!--<ul class="card-list">-->
-    <!--<li class="card"></li>-->
-    <!--<li class="card"></li>-->
-    <!--<li class="card"></li>-->
-    <!--</ul>-->
-    <!--<button class="card-btn add-card panel-footer">Add a card...</button>-->
-    <!--</div>-->
     <button class="add-list panel panel-info panel-heading" id="list-btn"><h3 class="panel-title">Add a list...</h3>
     </button>
-    <div id="edit-card-popup">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          Basic panel example
-        </div>
-      </div>
-    </div>
+    <div class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Edit card</h4>
+          </div>
+          <div class="modal-body">
+            <form class="form-horizontal">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Card text:</label>
+                <div class="col-sm-10">
+                  <textarea class="form-control" rows="3"></textarea>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Move to:</label>
+                <div class="col-sm-10">
+                  <select class="form-control">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Members:</label>
+                <div class="col-sm-10">
+                  <div class="panel panel-default panel-for-members">
+                    <div class="panel-body">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="">
+                          Option one
+                        </label>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </form>
+            <button type="button" class="btn btn-danger">Delete card</button>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default close-modal-btn" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
   </main>
 
   <script type="text/javascript" src="script/script.js"></script>
