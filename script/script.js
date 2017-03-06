@@ -1,10 +1,93 @@
 /**
  * Created by NEXUS on 26/02/2017.
  */
+
+function xhrLoadHandler() {
+  const myXhr = event.target;
+  const contentType = myXhr.getResponseHeader('content-type');
+
+  let data;
+  if (contentType.includes('json')) {
+    data = JSON.parse(myXhr.response);
+  }
+  else {
+    data = myXhr.response;
+  }
+  const lists = data.board;
+
+  initListsFromData(lists);
+}
+
+const xhr = new XMLHttpRequest();
+xhr.addEventListener('load', xhrLoadHandler);
+
+xhr.open('GET', 'assets/board.json');
+xhr.send();
+
+function xhr2LoadHandler() {
+  const myXhr = event.target;
+  const contentType = myXhr.getResponseHeader('content-type');
+
+  let data;
+  if (contentType.includes('json')) {
+    data = JSON.parse(myXhr.response);
+  }
+  else {
+    data = myXhr.response;
+  }
+  const members = data.members;
+
+  initMembersFromData(members);
+}
+
+const xhr2 = new XMLHttpRequest();
+xhr2.addEventListener('load', xhr2LoadHandler);
+
+xhr2.open('GET', 'assets/members.json');
+xhr2.send();
+
+function initListsFromData(lists) {
+  let newList;
+  for (const list of lists) {
+    newList = addList(list);
+    if (list.tasks.length > 0) {
+      for (task of list.tasks) {
+        addCard(task, newList);
+      }
+    }
+  }
+}
+
+function initMembersFromData(members) {
+  for(const member of members){
+    newMember = addMember(member.name);
+  }
+}
+
 let addListBtn = document.getElementById('list-btn');
 addListBtn.addEventListener('click', addList);
 const modal = document.querySelector('.modal');
-console.log(modal);
+
+const boardBtn = document.querySelector('.board-btn');
+const membersBtn = document.querySelector('.members-btn');
+boardBtn.addEventListener('click', changeMembersToBoard);
+membersBtn.addEventListener('click', changeBoardToMembers);
+
+function changeBoardToMembers() {
+  const main = document.querySelector('main');
+  const members = document.querySelector('#member-section');
+  main.style.display = 'none';
+  members.style.display = 'block';
+
+}
+
+function changeMembersToBoard() {
+  const main = document.querySelector('main');
+  const members = document.querySelector('#member-section');
+  main.style.display = 'inline-flex';
+  members.style.display = 'none';
+}
+
 
 function addCard(task, target) {
   let ulElm = target.querySelector('.card-list');
@@ -146,30 +229,6 @@ function deleteListHandler() {
   console.log(editElm);
 }
 
-
-function xhrLoadHandler() {
-  const myXhr = event.target;
-  const contentType = myXhr.getResponseHeader('content-type');
-
-  let data;
-  if (contentType.includes('json')) {
-    data = JSON.parse(myXhr.response);
-  }
-  else {
-    data = myXhr.response;
-  }
-  const lists = data.board;
-
-  initListsFromData(lists);
-}
-
-const xhr = new XMLHttpRequest();
-xhr.addEventListener('load', xhrLoadHandler);
-
-xhr.open('GET', 'assets/board.json');
-xhr.send();
-
-
 function initListTitles(targetList) {
   const targetParent = targetList || document;
 
@@ -211,18 +270,6 @@ function initListTitles(targetList) {
 
 initListTitles();
 
-function initListsFromData(lists) {
-  let newList;
-  for (const list of lists) {
-    newList = addList(list);
-    if (list.tasks.length > 0) {
-      for (task of list.tasks) {
-        addCard(task, newList);
-      }
-    }
-  }
-}
-
 const xBtn = modal.querySelector('span');
 const closeEditBtn = modal.querySelector('.close-modal-btn');
 closeEditBtn.addEventListener('click', editModalHide);
@@ -233,3 +280,16 @@ function editModalHide() {
   modal.style.display = 'none';
   modal.style.opacity = 0;
 }
+
+function addMember(member){
+  const membersGroup = document.querySelector('.members-group');
+  const addMemberSection = document.querySelector('.add-member');
+  const helper = document.createElement('div');
+  member = member || event.target;
+  helper.innerHTML += `<li class="list-group-item">${member}</li>`;
+  const newMember = membersGroup.insertBefore(helper.firstChild, addMemberSection);
+  return newMember;
+}
+
+const addMemberBtn = document.querySelector('.add-member-btn');
+addMemberBtn.addEventListener('click', addMember);

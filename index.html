@@ -19,8 +19,8 @@
       </a>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Board <span class="sr-only">(current)</span></a></li>
-          <li><a href="#">Members</a></li>
+          <li class="active board-btn"><a href="#">Board <span class="sr-only">(current)</span></a></li>
+          <li class="members-btn"><a href="#">Members</a></li>
         </ul>
       </div>
     </nav>
@@ -84,7 +84,17 @@
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
   </main>
-
+<section id="member-section">
+  <h1>Taskboard Members</h1>
+  <ul class="list-group members-group">
+    <li class="list-group-item add-member input-group input-group-lg">
+      <input type="text" placeholder="Add new member" class="add-member-input">
+      <button type="button" class="btn btn-primary add-member-btn" data-toggle="button" aria-pressed="false" autocomplete="off">
+        Add
+      </button>
+    </li>
+  </ul>
+</section>
   <script type="text/javascript" src="script/script.js"></script>
 </body>
 </html>
