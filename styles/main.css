@@ -189,7 +189,7 @@ main{
 #member-section{
   position: absolute;
   top: 50px;
-  padding: 50px 30px;
+  padding: 50px 40px;
   display: none;
 }
 
@@ -200,12 +200,68 @@ main{
 }
 
 .add-member-input{
+  display: inline-block;
   height: 45px;
   padding-left: 15px;
+  width: 300px;
 }
 .add-member-btn{
   height: 40px;
 }
+
+.member-item{
+  position: relative;
+}
+
+.member-name{
+  display: inline-block;
+}
+
+.member-btns{
+  /*float: right;*/
+  display: none;
+  position: absolute;
+  right: 14px;
+  top: 8px;
+}
+
+.edit-member-btn{
+  display: none;
+  position: absolute;
+  right: 14px;
+  top: 8px;
+}
+
+.member-item:hover > .member-btns{
+  display: inline-block;
+}
+
+.edit-input-mem{
+  display: none;
+  width: 500px;
+  height: 45px;
+}
+
+li.edit-mode > h3{
+  display: none;
+}
+
+li.edit-mode > .member-btns{
+  display: none;
+}
+
+li.edit-mode > .edit-input-mem{
+  display: inline-block;
+}
+
+li.edit-mode > .edit-member-btn{
+  display: inline-block;
+}
+
+.member-item.edit-mode > .member-btns{
+  display: none;
+}
+
 
 @media (min-width: 0) {
   /* Effects the problem regarding the float under 768px, fixes that. */
