@@ -19,82 +19,16 @@
       </a>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="active board-btn"><a href="#">Board <span class="sr-only">(current)</span></a></li>
-          <li class="members-btn"><a href="#">Members</a></li>
+          <li class="active board-btn"><a href="#board">Board <span class="sr-only">(current)</span></a></li>
+          <li class="members-btn"><a href="#members">Members</a></li>
         </ul>
       </div>
     </nav>
   </header>
 
   <main>
-    <button class="add-list panel panel-info panel-heading" id="list-btn"><h3 class="panel-title">Add a list...</h3>
-    </button>
-    <div class="modal fade" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title">Edit card</h4>
-          </div>
-          <div class="modal-body">
-            <form class="form-horizontal">
-              <div class="form-group">
-                <label class="col-sm-2 control-label">Card text:</label>
-                <div class="col-sm-10">
-                  <textarea class="form-control" rows="3"></textarea>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">Move to:</label>
-                <div class="col-sm-10">
-                  <select class="form-control">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                  </select>
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="col-sm-2 control-label">Members:</label>
-                <div class="col-sm-10">
-                  <div class="panel panel-default panel-for-members">
-                    <div class="panel-body">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          Option one
-                        </label>
-                      </div>
-                    </div>
 
-                  </div>
-                </div>
-              </div>
-            </form>
-            <button type="button" class="btn btn-danger">Delete card</button>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default close-modal-btn" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
   </main>
-<section id="member-section">
-  <h1>Taskboard Members</h1>
-  <ul class="list-group members-group">
-    <li class="list-group-item add-member input-group-lg">
-      <input type="text" maxlength="30" placeholder="Add new member" class="add-member-input form-control">
-      <button type="button" class="btn btn-primary add-member-btn" data-toggle="button" aria-pressed="false" autocomplete="off">
-        Add
-      </button>
-    </li>
-  </ul>
-</section>
   <script type="text/javascript" src="script/script.js"></script>
 </body>
 </html>
