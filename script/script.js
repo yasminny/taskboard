@@ -76,7 +76,6 @@ function updateAjaxState() {
 }
 
 
-
 /**
  * --------------------VIew (UI manipulation)-------------------
  */
@@ -118,8 +117,8 @@ function changeMainView() {
               <div class="form-group">
                 <label class="col-sm-2 control-label">Move to:</label>
                 <div class="col-sm-10">
-                  <select class="form-control">
-                    <option>1</option>
+                  <select class="form-control lists-options">
+                    
                   </select>
                 </div>
               </div>
@@ -127,13 +126,8 @@ function changeMainView() {
                 <label class="col-sm-2 control-label">Members:</label>
                 <div class="col-sm-10">
                   <div class="panel panel-default panel-for-members">
-                    <div class="panel-body">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox" value="">
-                          Option one
-                        </label>
-                      </div>
+                    <div class="panel-body card-members-list">
+                      
                     </div>
 
                   </div>
@@ -235,19 +229,19 @@ function addList(list) {
 
   initListTitles();
 
-if (list.title){
-  if (list.tasks.length > 0) {
+  if (list.title) {
+    if (list.tasks.length > 0) {
       for (const task of list.tasks) {
         addCard(task, newList);
       }
     }
-}
+  }
 // // loop over list.tasks
 //   for (const task of list.tasks) {
 //     addCard(task, newList);
 //   }
 
-  if(!list.title){
+  if (!list.title) {
     const newList = {
       title: 'New list',
       tasks: []
@@ -367,6 +361,7 @@ function addCard(task, target) {
   let ulElm = target.querySelector('.card-list');
   let helper = document.createElement('div');
   taskCounter++;
+  task.taskCounter = taskCounter;
 
   helper.innerHTML = `<li class="card taskCounter-${taskCounter}">
       <button type="button" class="edit-card btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">Edit card</button>
@@ -410,8 +405,8 @@ function addEmptyNewCard(event) {
 
   const cardData = {
     text: '?',
-    members: []
-
+    members: [],
+    taskCounter: taskCounter
   };
 
 
@@ -429,11 +424,37 @@ function editModalShow() {
   modal.style.opacity = 1;
 
   const card = event.target.closest('.card');
+  const getCardNumber = card.classList.value.split('-');
+  const cardNumber = Number(getCardNumber[1]);
   const list = card.closest('.list');
-  const cardContent = card.querySelector('.card-content').textContent;
-  const editContent = modal.querySelector('textarea');
-  editContent.innerHTML = cardContent;
+  const listTitle = list.querySelector('.panel-title').textContent;
+  const editContent = modal.querySelector('.card-text');
+  const moveToList = modal.querySelector('.lists-options');
+  const lists = appData.lists;
+  for (const list of lists) {
+    if (list.title === listTitle) {
+      moveToList.innerHTML += `<option value="${list.title}" selected>${list.title}</option>`;
+    }
+    else {
+      moveToList.innerHTML += `<option value="${list.title}">${list.title}</option>`;
+    }
+  }
+  const appDataRelevantList = appData.lists.find((list) => {
+    return list.title === listTitle;
+  });
+  const appDataRelevantCard = appDataRelevantList.tasks.find((task) => task.taskCounter === cardNumber);
+  editContent.textContent = appDataRelevantCard.text;
 
+  const cardMemberList = modal.querySelector('.card-members-list');
+  const membersList = appData.members;
+  for (const mem of membersList) {
+    cardMemberList.innerHTML += `<div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="${mem.name}">
+                          ${mem.name}
+                        </label>
+                      </div>`;
+  }
   // const
 }
 
@@ -441,11 +462,14 @@ function editModalHide() {
   const modal = document.querySelector('.modal');
   modal.style.display = 'none';
   modal.style.opacity = 0;
+  const cardMemberList = modal.querySelector('.card-members-list');
+  cardMemberList.innerHTML = '';
+
 }
 
 function editCardSaved() {
-const modal = event.target.closest('.modal');
-const cardText = modal.querySelector('.card-text');
+  const modal = event.target.closest('.modal');
+  const cardText = modal.querySelector('.card-text');
 
 }
 
@@ -527,7 +551,7 @@ function deleteMember() {
   });
   const index = appData.members.indexOf(appDataRelevantMember);
   appData.members.splice(index, 1);
-console.log(appData);
+  console.log(appData);
   liElm.remove();
 }
 
