@@ -175,7 +175,10 @@ main{
 
 .modal{
   background-color: rgba(0, 0, 0, 0.5);
+}
 
+.relevent-card-number, .relevent-list-title{
+  display: none;
 }
 
 .modal-dialog{

@@ -47,6 +47,10 @@ function xhrMemLoadHandler(event) {
     data = myXhr.response;
   }
   appData.members = data.members;
+  for(const appDataMem of appData.members){
+    appDataMem.relatedCards = [];
+  }
+
   //
   //
   updateAjaxState();
@@ -112,6 +116,8 @@ function changeMainView() {
                 <label class="col-sm-2 control-label">Card text:</label>
                 <div class="col-sm-10">
                   <textarea class="form-control card-text" rows="3"></textarea>
+                  <span class="relevent-card-number"></span>
+                  <span class="relevent-list-title"></span>
                 </div>
               </div>
               <div class="form-group">
@@ -134,7 +140,7 @@ function changeMainView() {
                 </div>
               </div>
             </form>
-            <button type="button" class="btn btn-danger">Delete card</button>
+            <button type="button" class="btn btn-danger delete-card-btn">Delete card</button>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default close-modal-btn" data-dismiss="modal">Close</button>
@@ -153,10 +159,13 @@ function changeMainView() {
     const xBtn = modal.querySelector('span');
     const closeEditBtn = modal.querySelector('.close-modal-btn');
     const saveChangesBtn = modal.querySelector('.save-changes-btn');
+    const deleteCardBtn = modal.querySelector('.delete-card-btn');
 
     closeEditBtn.addEventListener('click', editModalHide);
     xBtn.addEventListener('click', editModalHide);
     saveChangesBtn.addEventListener('click', editCardSaved);
+    deleteCardBtn.addEventListener('click', deleteCard);
+
 
 // loop over the lists
     for (const list of appData.lists) {
@@ -360,6 +369,7 @@ function deleteListHandler() {
 function addCard(task, target) {
   let ulElm = target.querySelector('.card-list');
   let helper = document.createElement('div');
+
   taskCounter++;
   task.taskCounter = taskCounter;
 
@@ -375,6 +385,11 @@ function addCard(task, target) {
 
   if (members.length > 0) {
     for (let mem of members) {
+      for(const appDataMem of appData.members){
+        if(mem == appDataMem.name){
+          appDataMem.relatedCards.push(taskCounter);
+        }
+      }
       const memberName = mem;
       const nameArray = mem.split(' ');
 
@@ -431,6 +446,8 @@ function editModalShow() {
   const editContent = modal.querySelector('.card-text');
   const moveToList = modal.querySelector('.lists-options');
   const lists = appData.lists;
+  modal.querySelector('.relevent-card-number').innerHTML = cardNumber;
+  modal.querySelector('.relevent-list-title').innerHTML = listTitle;
   for (const list of lists) {
     if (list.title === listTitle) {
       moveToList.innerHTML += `<option value="${list.title}" selected>${list.title}</option>`;
@@ -471,6 +488,23 @@ function editCardSaved() {
   const modal = event.target.closest('.modal');
   const cardText = modal.querySelector('.card-text');
 
+}
+
+function deleteCard() {
+  const modal = event.target.closest('.modal');
+  const cardNumber = modal.querySelector('.relevent-card-number').textContent;
+  const oldListTitle = modal.querySelector('.relevent-list-title').textContent;
+  const cardToDelete = Number(cardNumber);
+
+  const oldAppDataList = appData.lists.find((list) => list.title === oldListTitle);
+
+    const appDataCardToDelete = oldAppDataList.tasks.find((task) => {
+      return task.taskCounter === cardToDelete;
+    });
+
+    
+
+console.log(appDataCardToDelete);
 }
 
 
