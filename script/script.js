@@ -47,7 +47,7 @@ function xhrMemLoadHandler(event) {
     data = myXhr.response;
   }
   appData.members = data.members;
-  for(const appDataMem of appData.members){
+  for (const appDataMem of appData.members) {
     appDataMem.relatedCards = [];
   }
 
@@ -385,8 +385,8 @@ function addCard(task, target) {
 
   if (members.length > 0) {
     for (let mem of members) {
-      for(const appDataMem of appData.members){
-        if(mem == appDataMem.name){
+      for (const appDataMem of appData.members) {
+        if (mem == appDataMem.name) {
           appDataMem.relatedCards.push(taskCounter);
         }
       }
@@ -494,17 +494,18 @@ function deleteCard() {
   const modal = event.target.closest('.modal');
   const cardNumber = modal.querySelector('.relevent-card-number').textContent;
   const oldListTitle = modal.querySelector('.relevent-list-title').textContent;
+  const releventPageLists = document.querySelectorAll('.list');
+  const releventPageListforDelete = releventPageLists.find((list) => list.querySelector('.panel-title').textContent === oldListTitle);
   const cardToDelete = Number(cardNumber);
 
   const oldAppDataList = appData.lists.find((list) => list.title === oldListTitle);
 
-    const appDataCardToDelete = oldAppDataList.tasks.find((task) => {
-      return task.taskCounter === cardToDelete;
-    });
+  const appDataCardToDelete = oldAppDataList.tasks.find((task) => {
+    return task.taskCounter === cardToDelete;
+  });
 
-    console.log('hello');
 
-console.log(appDataCardToDelete);
+  console.log(appDataCardToDelete);
 }
 
 
