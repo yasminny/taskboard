@@ -502,7 +502,7 @@ function deleteCard() {
       return task.taskCounter === cardToDelete;
     });
 
-    
+    console.log('hello');
 
 console.log(appDataCardToDelete);
 }
