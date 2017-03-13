@@ -49,6 +49,7 @@ function xhrMemLoadHandler(event) {
   appData.members = data.members;
   for (const appDataMem of appData.members) {
     appDataMem.relatedCards = [];
+    appDataMem.relatedCardsId = [];
   }
 
   //
@@ -79,6 +80,56 @@ function updateAjaxState() {
   }
 }
 
+// members
+function addNewMemberToAppData(newUser) {
+  const newAppDataMember = {
+    name: newUser
+  };
+  newAppDataMember.id = uuid();
+  const id = newAppDataMember.id;
+  appData.members.push(newAppDataMember);
+ return id;
+}
+
+function deleteMemberFromAppData(index) {
+  appData.members.splice(index, 1);
+}
+
+function editMemberNameInAppData(appDataRelevantMember, newName) {
+  appDataRelevantMember.name = newName;
+}
+
+//list
+function newListAddedToAppData(id) {
+  const newList = {
+    title: 'New list',
+    tasks: [],
+    id: id
+  };
+  appData.lists.push(newList);
+}
+
+function AppDataListTitleEdit(id, newName) {
+  let appDataRelevantList = appData.lists.find((list) => {
+    return list.id === id;
+  });
+
+  appDataRelevantList.title = newName;
+}
+
+function deleteListFromAppData(id) {
+  let appDataRelevantList = appData.lists.find((list) => {
+    return list.id === id;
+  });
+  const index = appData.lists.indexOf(appDataRelevantList);
+  appData.lists.splice(index, 1);
+}
+
+//card
+function addMemberRelatedCardNumbersToAppData(appDataMem, taskCounter, id) {
+  appDataMem.relatedCards.push(taskCounter);
+  appDataMem.relatedCardsId.push(id);
+}
 
 /**
  * --------------------VIew (UI manipulation)-------------------
@@ -188,8 +239,6 @@ function changeMainView() {
 </section>`;
 
     initMembersFromData(appData.members);
-
-
   }
   console.log(appData);
 }
@@ -206,8 +255,9 @@ function changeMainView() {
 // }
 function addList(list) {
   let title = list.title || 'New list';
+  let id = list.id || uuid();
 
-  const listTemplate = `<div class="list panel panel-default">
+  const listTemplate = `<div class="list panel panel-default" data-id="${id}">
       <div class="list-header panel-heading">
         <h3 class="panel-title" >${title}</h3>
         <input type="text" maxlength="30">
@@ -251,11 +301,7 @@ function addList(list) {
 //   }
 
   if (!list.title) {
-    const newList = {
-      title: 'New list',
-      tasks: []
-    };
-    appData.lists.push(newList);
+    newListAddedToAppData(id);
   }
 }
 
@@ -307,11 +353,13 @@ function titleClickHandler() {
 
 function titleInputKeyHandler() {
   const target = event.target;
+  const list = target.closest('.list');
+  const id = list.getAttribute('data-id');
   if (event.keyCode === 13) {
     const value = event.target.value;
     const titleElm = target.parentNode.querySelector('h3');
 
-    AppDataListTitleEdit(titleElm.textContent, value);
+    AppDataListTitleEdit(id, value);
     titleElm.innerHTML = value;
     target.style.display = 'none';
     titleElm.style.display = 'inline-block';
@@ -320,20 +368,14 @@ function titleInputKeyHandler() {
 
 function titleInputBlurHandler() {
   const target = event.target;
-  const value = event.target.value;
+  const list = target.closest('.list');
+  const id = list.getAttribute('data-id');
+  const value = target.value;
   const titleElm = target.parentNode.querySelector('h3');
-  AppDataListTitleEdit(titleElm.textContent, value);
+  AppDataListTitleEdit(id, value);
   titleElm.innerHTML = value;
   target.style.display = 'none';
   titleElm.style.display = 'inline-block';
-}
-
-function AppDataListTitleEdit(oldName, newName) {
-  let appDataRelevantList = appData.lists.find((list) => {
-    return list.title === oldName;
-  });
-
-  appDataRelevantList.title = newName;
 }
 
 function titleDeleteClickHandler() {
@@ -347,6 +389,8 @@ function titleDeleteClickHandler() {
 
 function deleteListHandler() {
   const target = event.target;
+  const list = target.closest('.list');
+  const id = list.getAttribute('data-id');
   const titleElm = target.closest('.list-header').querySelector('h3');
   const listName = titleElm.innerHTML;
   let answer = confirm(`Deleting ${listName} list. Are you sure?`);
@@ -354,11 +398,7 @@ function deleteListHandler() {
   const listElm = target.closest('.list');
   if (answer) {
     listElm.parentNode.removeChild(listElm);
-    let appDataRelevantList = appData.lists.find((list) => {
-      return list.title === listName;
-    });
-    const index = appData.lists.indexOf(appDataRelevantList);
-    appData.lists.splice(index, 1);
+    deleteListFromAppData(id);
 
   } else {
     const editElm = listElm.querySelector('.dropdown-menu');
@@ -369,33 +409,65 @@ function deleteListHandler() {
 function addCard(task, target) {
   let ulElm = target.querySelector('.card-list');
   let helper = document.createElement('div');
+  let newCard;
+  const idTask = task.id;
 
-  taskCounter++;
-  task.taskCounter = taskCounter;
-
-  helper.innerHTML = `<li class="card taskCounter-${taskCounter}">
+  if (!task.taskCounter) {
+    taskCounter++;
+    task.taskCounter = taskCounter;
+    helper.innerHTML = `<li class="card taskCounter-${taskCounter}" data-id="${idTask}">
       <button type="button" class="edit-card btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">Edit card</button>
       <p class="card-content">${task.text}</p>
       <div class="member-list-on-card"></div>
   </li>`;
 
-  const newCard = ulElm.appendChild(helper.querySelector('.card'));
-  const memberList = newCard.querySelector('div');
-  const members = task.members;
+    newCard = ulElm.appendChild(helper.querySelector('.card'));
+    const memberList = newCard.querySelector('div');
+    const members = task.members;
 
-  if (members.length > 0) {
-    for (let mem of members) {
-      for (const appDataMem of appData.members) {
-        if (mem == appDataMem.name) {
-          appDataMem.relatedCards.push(taskCounter);
+    if (members.length > 0) {
+      for (let mem of members) {
+        for (const appDataMem of appData.members) {
+          if (mem.id == appDataMem.id) {
+            addMemberRelatedCardNumbersToAppData(appDataMem, taskCounter, idTask);
+          }
         }
+        const memberName = mem;
+        const nameArray = mem.split(' ');
+        const memId = mem.id;
+
+        const inital = nameArray[0].split('')[0] + nameArray[1].split('')[0];
+
+        memberList.innerHTML += `<span class="member-inital-on-card label label-primary" title="${memberName}" data-id="${memId}">${inital}</span>`;
       }
-      const memberName = mem;
-      const nameArray = mem.split(' ');
+    }
+  }
+  else {
+    cardNumber = task.taskCounter;
+    helper.innerHTML = `<li class="card taskCounter-${cardNumber}">
+      <button type="button" class="edit-card btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">Edit card</button>
+      <p class="card-content">${task.text}</p>
+      <div class="member-list-on-card"></div>
+  </li>`;
 
-      const inital = nameArray[0].split('')[0] + nameArray[1].split('')[0];
+    newCard = ulElm.appendChild(helper.querySelector('.card'));
+    const memberList = newCard.querySelector('div');
+    const members = task.members;
 
-      memberList.innerHTML += `<span class="member-inital-on-card label label-primary" title="${memberName}">${inital}</span>`;
+    if (members.length > 0) {
+      for (let mem of members) {
+        for (const appDataMem of appData.members) {
+          if (mem == appDataMem.name && !appDataMem.relatedCards.includes(cardNumber)) {
+            appDataMem.relatedCards.push(cardNumber);
+          }
+        }
+        const memberName = mem;
+        const nameArray = mem.split(' ');
+
+        const inital = nameArray[0].split('')[0] + nameArray[1].split('')[0];
+
+        memberList.innerHTML += `<span class="member-inital-on-card label label-primary" title="${memberName}">${inital}</span>`;
+      }
     }
   }
 
@@ -461,18 +533,28 @@ function editModalShow() {
   });
   const appDataRelevantCard = appDataRelevantList.tasks.find((task) => task.taskCounter === cardNumber);
   editContent.textContent = appDataRelevantCard.text;
+  editContent.value = appDataRelevantCard.text;
 
   const cardMemberList = modal.querySelector('.card-members-list');
   const membersList = appData.members;
   for (const mem of membersList) {
-    cardMemberList.innerHTML += `<div class="checkbox">
+    if (mem.relatedCards.includes(cardNumber)) {
+      cardMemberList.innerHTML += `<div class="checkbox">
+                        <label>
+                          <input type="checkbox" value="${mem.name}" checked>
+                          ${mem.name}
+                        </label>
+                      </div>`;
+    }
+    else {
+      cardMemberList.innerHTML += `<div class="checkbox">
                         <label>
                           <input type="checkbox" value="${mem.name}">
                           ${mem.name}
                         </label>
                       </div>`;
+    }
   }
-  // const
 }
 
 function editModalHide() {
@@ -481,6 +563,11 @@ function editModalHide() {
   modal.style.opacity = 0;
   const cardMemberList = modal.querySelector('.card-members-list');
   cardMemberList.innerHTML = '';
+  const moveToList = modal.querySelector('.lists-options');
+  moveToList.innerHTML = '';
+  const editContent = modal.querySelector('.card-text');
+  editContent.textContent = '';
+  editContent.value = '';
 
 }
 
@@ -488,6 +575,7 @@ function editCardSaved() {
   const modal = event.target.closest('.modal');
   const cardText = modal.querySelector('.card-text');
 
+  editModalHide();
 }
 
 function deleteCard() {
@@ -495,27 +583,48 @@ function deleteCard() {
   const cardNumber = modal.querySelector('.relevent-card-number').textContent;
   const oldListTitle = modal.querySelector('.relevent-list-title').textContent;
   const releventPageLists = document.querySelectorAll('.list');
-  const releventPageListforDelete = releventPageLists.find((list) => list.querySelector('.panel-title').textContent === oldListTitle);
-  const cardToDelete = Number(cardNumber);
+  let releventPageListforDelete;
+
+  for (const releventPageList of releventPageLists) {
+    if (releventPageList.querySelector('.panel-title').textContent === oldListTitle) {
+      releventPageListforDelete = releventPageList;
+    }
+  }
+
+  const cardNumToDelete = Number(cardNumber);
+  const cardsInReleventList = releventPageListforDelete.querySelectorAll('.card');
+  let cardToDelete;
+  for (const card of cardsInReleventList) {
+    const cardNumCheck = card.classList[1];
+    if (cardNumCheck.endsWith(cardNumber)) {
+      cardToDelete = card;
+    }
+  }
+
+  cardToDelete.remove();
 
   const oldAppDataList = appData.lists.find((list) => list.title === oldListTitle);
 
-  const appDataCardToDelete = oldAppDataList.tasks.find((task) => {
-    return task.taskCounter === cardToDelete;
-  });
+  let indexOfAppDataToDelete;
+  for (const i in oldAppDataList.tasks) {
+    if (oldAppDataList.tasks[i].taskCounter === cardNumToDelete) {
+      indexOfAppDataToDelete = i;
+    }
+  }
 
+  oldAppDataList.tasks.splice(indexOfAppDataToDelete, 1);
 
-  console.log(appDataCardToDelete);
+  editModalHide();
 }
 
 
-//----------------------------members UI functions----------------------------------
+//----------------------members UI functions----------------------------
 
 function initMembersFromData(members) {
 
   for (const member of members) {
 
-    addMember(member.name);
+    addMember(member.name, member.id);
   }
   const addMemberBtn = document.querySelector('.add-member-btn');
   addMemberBtn.addEventListener('click', addMemberByUser);
@@ -524,11 +633,11 @@ function initMembersFromData(members) {
   // liElm.classList.toggle('edit-mode');
 }
 
-function addMember(member) {
+function addMember(member, id) {
   const membersGroup = document.querySelector('.members-group');
   const addMemberSection = document.querySelector('.add-member');
   const helper = document.createElement('div');
-  helper.innerHTML += `<li class="list-group-item member-item"><h3 class="member-name">${member}</h3>
+  helper.innerHTML += `<li class="list-group-item member-item" data-id="${id}"><h3 class="member-name">${member}</h3>
 <input type="text" class="edit-input-mem form-control">
 <div class="edit-member-btn">
 <button type="button" class="btn btn-default cancel-edit-mem">Cancel</button>
@@ -550,9 +659,10 @@ function addMemberByUser() {
   const addMemberSection = document.querySelector('.add-member');
   const helper = document.createElement('div');
   const newUser = document.querySelector('.add-member-input').value;
-  console.log(newUser);
+
   if (newUser !== '') {
-    helper.innerHTML += `<li class="list-group-item member-item"><h3 class="member-name">${newUser}</h3>
+    const id = addNewMemberToAppData(newUser);
+    helper.innerHTML += `<li class="list-group-item member-item" data-id="${id}"><h3 class="member-name">${newUser}</h3>
 <input type="text" class="edit-input-mem form-control">
 <div class="edit-member-btn">
 <button type="button" class="btn btn-default cancel-edit-mem">Cancel</button>
@@ -568,10 +678,6 @@ function addMemberByUser() {
     newMember.querySelector('.edit-member').addEventListener('click', editMemberModeToggle);
     newMember.querySelector('.cancel-edit-mem').addEventListener('click', editMemberModeToggle);
     newMember.querySelector('.save-edit-mem').addEventListener('click', editMemberSave);
-    const newAppDataMember = {
-      name: newUser
-    };
-    appData.members.push(newAppDataMember);
     return newMember;
   }
 }
@@ -580,13 +686,12 @@ function deleteMember() {
   const target = event.target;
   const liElm = target.closest('.member-item');
 
-  const name = liElm.querySelector('.member-name').textContent;
+  const id = liElm.getAttribute('data-id');
   let appDataRelevantMember = appData.members.find((member) => {
-    return member.name === name;
+    return member.id === id;
   });
   const index = appData.members.indexOf(appDataRelevantMember);
-  appData.members.splice(index, 1);
-  console.log(appData);
+  deleteMemberFromAppData(index);
   liElm.remove();
 }
 
@@ -603,24 +708,19 @@ function editMemberSave() {
   const liElm = target.closest('.member-item');
   const inputName = liElm.querySelector('.edit-input-mem').value;
   const name = liElm.querySelector('.member-name');
-
-  const oldName = name.textContent;
+const id = liElm.getAttribute('data-id');
 
   name.textContent = inputName;
-  const newName = name;
-
 
   let appDataRelevantMember = appData.members.find((member) => {
-    return member.name === oldName;
+    return member.id === id;
   });
 
-  console.log(appDataRelevantMember);
-  appDataRelevantMember.name = newName.textContent;
-
+  editMemberNameInAppData(appDataRelevantMember, inputName);
+console.log(appData);
   liElm.classList.toggle('edit-mode');
-  return newName;
 }
 
 
-
-
+// let num = uuid.v4();
+// console.log(num);

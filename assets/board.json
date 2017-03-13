@@ -1,9 +1,11 @@
 {
   "board": [
     {
+      "id": "1109cbd9-1195-41f0-8c1d-151c7de5e3b6",
       "title": "Backlog",
       "tasks": [
         {
+          "id": "c7e2f3a9-c2d6-4ebf-8670-44db5ed2d54d",
           "text": "Must attend a daily meeting every morning at 11:00.",
           "members": [
             "Alex Ilyaev",
@@ -11,6 +13,7 @@
           ]
         },
         {
+          "id": "09334f18-865e-42c0-ba69-b7af0693bf45",
           "text": "The daily standup meeting must not be longer than 15-20 minutes. We must use a stopwatch to limit every members update.",
           "members": [
             "Alex Ilyaev",
@@ -18,16 +21,19 @@
           ]
         },
         {
+          "id": "38c4fe6d-cd38-4449-848e-63c7d802de15",
           "text": "This card does not have any memebers assigned to it :(\nShould we add some members here?\nMaybe Darth Vader or some other cool guy?",
           "members": []
         },
         {
+          "id": "f97a2576-fa66-4654-b7fd-9c303c5a609e",
           "text": "Must attend a daily meeting every morning at 11:00.",
           "members": [
             "Dima Vishnevetsky"
           ]
         },
         {
+          "id": "b2d6828a-02e5-4da6-ae29-7207e8c4ab6e",
           "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, eveniet sed sequi quo quis magni qui nisi quas est eligendi expedita nesciunt error voluptatem ipsa. Doloremque laudantium, minus dignissimos incidunt. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur culpa delectus, impedit ad maxime repudiandae distinctio, id ut molestias, consectetur laudantium itaque ratione et praesentium nulla provident excepturi natus eveniet!.",
           "members": [
             "Alex Ilyaev",
@@ -37,9 +43,11 @@
       ]
     },
     {
+      "id": "733d5a2f-4561-40d1-bc2d-73e0f38c2588",
       "title": "Todo",
       "tasks": [
         {
+          "id": "fc9937da-0666-4161-83e7-9e1b3e21e472",
           "text": "Wash the dishes",
           "members": [
             "Alex Ilyaev",
@@ -47,12 +55,14 @@
           ]
         },
         {
+          "id": "d6bb7009-3cd5-446a-96f4-d7e853281781",
           "text": "Do the laundry",
           "members": [
             "Gil Tayar"
           ]
         },
         {
+          "id": "f00555d2-1f39-48bf-b94c-f5da2fb37b17",
           "text": "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, eveniet sed sequi quo quis magni qui nisi quas est eligendi expedita nesciunt error voluptatem ipsa. Doloremque laudantium, minus dignissimos incidunt. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur culpa delectus, impedit ad maxime repudiandae distinctio, id ut molestias, consectetur laudantium itaque ratione et praesentium nulla provident excepturi natus eveniet!",
           "members": [
             "Alex Ilyaev",
@@ -62,24 +72,29 @@
       ]
     },
     {
+      "id": "97d9224d-c2ad-4766-90e6-63e1c25f79f7",
       "title": "In Progress",
       "tasks": [
         {
+          "id": "3b4419c4-cbf0-48b1-973c-c0953a20ba8b",
           "text": "Practice!",
           "members": []
         }
       ]
     },
     {
+      "id": "3baa3734-c00a-4d21-b2db-d4a96a0acfce",
       "title": "QA",
       "tasks": [
         {
+          "id": "c28c1c05-bbe1-454c-a64f-f36ea62fad9b",
           "text": "Redesign Logo",
           "members": [
             "Alex Ilyaev"
           ]
         },
         {
+          "id": "6347a17e-4fda-499b-9200-eed30ba2bec9",
           "text": "Bug: Blurring the list options dropdown does not close the drop down",
           "members": [
             "Gil Tayar",
@@ -89,9 +104,11 @@
       ]
     },
     {
+      "id": "3dec9110-7a63-477a-9b88-a43a9f139f2f",
       "title": "Done",
       "tasks": [
         {
+          "id": "716239bc-6ae0-4d2e-96ac-6ab75b675755",
           "text": "Code review",
           "members": [
             "Alex Ilyaev",
