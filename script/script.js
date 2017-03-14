@@ -341,7 +341,7 @@ function initListTitles(targetList) {
   }
 }
 
-function titleClickHandler() {
+function titleClickHandler(event) {
 
   const target = event.target;
   target.style.display = 'none';
@@ -351,7 +351,7 @@ function titleClickHandler() {
   inputElm.focus();
 }
 
-function titleInputKeyHandler() {
+function titleInputKeyHandler(event) {
   const target = event.target;
   const list = target.closest('.list');
   const id = list.getAttribute('data-id');
@@ -366,7 +366,7 @@ function titleInputKeyHandler() {
   }
 }
 
-function titleInputBlurHandler() {
+function titleInputBlurHandler(event) {
   const target = event.target;
   const list = target.closest('.list');
   const id = list.getAttribute('data-id');
@@ -378,7 +378,7 @@ function titleInputBlurHandler() {
   titleElm.style.display = 'inline-block';
 }
 
-function titleDeleteClickHandler() {
+function titleDeleteClickHandler(event) {
   const target = event.target;
   const editElm = target.closest('.dropdown').querySelector('.dropdown-menu');
   editElm.style.display = 'inline-block';
@@ -387,7 +387,7 @@ function titleDeleteClickHandler() {
   editElm.focus();
 }
 
-function deleteListHandler() {
+function deleteListHandler(event) {
   const target = event.target;
   const list = target.closest('.list');
   const id = list.getAttribute('data-id');
@@ -571,14 +571,14 @@ function editModalHide() {
 
 }
 
-function editCardSaved() {
+function editCardSaved(event) {
   const modal = event.target.closest('.modal');
   const cardText = modal.querySelector('.card-text');
 
   editModalHide();
 }
 
-function deleteCard() {
+function deleteCard(event) {
   const modal = event.target.closest('.modal');
   const cardNumber = modal.querySelector('.relevent-card-number').textContent;
   const oldListTitle = modal.querySelector('.relevent-list-title').textContent;
@@ -682,7 +682,7 @@ function addMemberByUser() {
   }
 }
 
-function deleteMember() {
+function deleteMember(event) {
   const target = event.target;
   const liElm = target.closest('.member-item');
 
@@ -695,7 +695,7 @@ function deleteMember() {
   liElm.remove();
 }
 
-function editMemberModeToggle() {
+function editMemberModeToggle(event) {
   const liElm = event.target.closest('.member-item');
   liElm.classList.toggle('edit-mode');
   const name = liElm.querySelector('.member-name').innerHTML;
@@ -703,7 +703,7 @@ function editMemberModeToggle() {
   editInput.value = name;
 }
 
-function editMemberSave() {
+function editMemberSave(event) {
   const target = event.target;
   const liElm = target.closest('.member-item');
   const inputName = liElm.querySelector('.edit-input-mem').value;
