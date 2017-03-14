@@ -24,7 +24,7 @@ function getBoardData() {
   const xhr = new XMLHttpRequest();
   xhr.addEventListener('load', xhrBoardLoadHandler);
 
-  xhr.open('GET', 'assets/board.json');
+  xhr.open('GET', 'assets/board-advanced.json');
   xhr.send();
 }
 function getMembersData() {
@@ -88,7 +88,7 @@ function addNewMemberToAppData(newUser) {
   newAppDataMember.id = uuid();
   const id = newAppDataMember.id;
   appData.members.push(newAppDataMember);
- return id;
+  return id;
 }
 
 function deleteMemberFromAppData(index) {
@@ -131,6 +131,19 @@ function addMemberRelatedCardNumbersToAppData(appDataMem, taskCounter, id) {
   appDataMem.relatedCardsId.push(id);
 }
 
+function newCardAddedByUserPushedToAppData(idTask, appDataRelevantList) {
+  const cardData = {
+    text: '?',
+    members: [],
+    taskCounter: taskCounter,
+    id: idTask
+  };
+  appDataRelevantList.tasks.push(cardData);
+}
+
+//modal
+
+
 /**
  * --------------------VIew (UI manipulation)-------------------
  */
@@ -145,6 +158,7 @@ function initPageByHash() {
 
 //---------------------creating basic UI--------------------------------------
 window.addEventListener('hashchange', changeMainView);
+
 function changeMainView() {
   const hash = window.location.hash;
   const navbar = document.querySelector('.navbar-nav');
@@ -167,8 +181,8 @@ function changeMainView() {
                 <label class="col-sm-2 control-label">Card text:</label>
                 <div class="col-sm-10">
                   <textarea class="form-control card-text" rows="3"></textarea>
-                  <span class="relevent-card-number"></span>
-                  <span class="relevent-list-title"></span>
+                  <span class="relevent-card-id"></span>
+                  <span class="relevent-list-id"></span>
                 </div>
               </div>
               <div class="form-group">
@@ -427,14 +441,16 @@ function addCard(task, target) {
 
     if (members.length > 0) {
       for (let mem of members) {
+        let memberName;
         for (const appDataMem of appData.members) {
-          if (mem.id == appDataMem.id) {
+          if (mem == appDataMem.id) {
             addMemberRelatedCardNumbersToAppData(appDataMem, taskCounter, idTask);
+            memberName = appDataMem.name;
           }
         }
-        const memberName = mem;
-        const nameArray = mem.split(' ');
-        const memId = mem.id;
+
+        const nameArray = memberName.split(' ');
+        const memId = mem;
 
         const inital = nameArray[0].split('')[0] + nameArray[1].split('')[0];
 
@@ -443,8 +459,8 @@ function addCard(task, target) {
     }
   }
   else {
-    cardNumber = task.taskCounter;
-    helper.innerHTML = `<li class="card taskCounter-${cardNumber}">
+    let cardNumber = task.taskCounter;
+    helper.innerHTML = `<li class="card taskCounter-${cardNumber} data-id="${idTask}">
       <button type="button" class="edit-card btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">Edit card</button>
       <p class="card-content">${task.text}</p>
       <div class="member-list-on-card"></div>
@@ -461,7 +477,7 @@ function addCard(task, target) {
             appDataMem.relatedCards.push(cardNumber);
           }
         }
-        const memberName = mem;
+        const memberName = mem.name;
         const nameArray = mem.split(' ');
 
         const inital = nameArray[0].split('')[0] + nameArray[1].split('')[0];
@@ -479,8 +495,9 @@ function addEmptyNewCard(event) {
   const list = event.target.closest('.list');
   let ulElm = list.querySelector('.card-list');
   let helper = document.createElement('div');
+  const idTask = uuid();
 
-  helper.innerHTML = `<li class="card taskCounter-${taskCounter}">
+  helper.innerHTML = `<li class="card taskCounter-${taskCounter}" data-id="${idTask}">
       <button type="button" class="edit-card btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">Edit card</button>
       <p class="card-content">?</p>
       <div class="member-list-on-card"></div>
@@ -490,38 +507,32 @@ function addEmptyNewCard(event) {
   let editBtn = newCard.querySelector('.edit-card');
   editBtn.addEventListener('click', editModalShow);
 
-  const cardData = {
-    text: '?',
-    members: [],
-    taskCounter: taskCounter
-  };
-
-
   const title = list.querySelector('.panel-title').textContent;
   let appDataRelevantList = appData.lists.find((list) => {
     return list.title === title;
   });
 
-  appDataRelevantList.tasks.push(cardData);
+  newCardAddedByUserPushedToAppData(idTask, appDataRelevantList);
 }
 
-function editModalShow() {
+function editModalShow(event) {
   const modal = document.querySelector('.modal');
   modal.style.display = 'block';
   modal.style.opacity = 1;
 
   const card = event.target.closest('.card');
-  const getCardNumber = card.classList.value.split('-');
-  const cardNumber = Number(getCardNumber[1]);
+  const cardNumber = card.getAttribute('data-id');
+  modal.querySelector('.relevent-card-id').textContent = cardNumber;
   const list = card.closest('.list');
-  const listTitle = list.querySelector('.panel-title').textContent;
+  // const listTitle = list.querySelector('.panel-title').textContent;
+  const listId = list.getAttribute('data-id');
+  modal.querySelector('.relevent-list-id').textContent = listId;
   const editContent = modal.querySelector('.card-text');
   const moveToList = modal.querySelector('.lists-options');
   const lists = appData.lists;
-  modal.querySelector('.relevent-card-number').innerHTML = cardNumber;
-  modal.querySelector('.relevent-list-title').innerHTML = listTitle;
+
   for (const list of lists) {
-    if (list.title === listTitle) {
+    if (list.id === listId) {
       moveToList.innerHTML += `<option value="${list.title}" selected>${list.title}</option>`;
     }
     else {
@@ -529,19 +540,19 @@ function editModalShow() {
     }
   }
   const appDataRelevantList = appData.lists.find((list) => {
-    return list.title === listTitle;
+    return list.id === listId;
   });
-  const appDataRelevantCard = appDataRelevantList.tasks.find((task) => task.taskCounter === cardNumber);
+  const appDataRelevantCard = appDataRelevantList.tasks.find((task) => task.id === cardNumber);
   editContent.textContent = appDataRelevantCard.text;
   editContent.value = appDataRelevantCard.text;
 
   const cardMemberList = modal.querySelector('.card-members-list');
   const membersList = appData.members;
   for (const mem of membersList) {
-    if (mem.relatedCards.includes(cardNumber)) {
+    if (mem.relatedCardsId.includes(cardNumber)) {
       cardMemberList.innerHTML += `<div class="checkbox">
                         <label>
-                          <input type="checkbox" value="${mem.name}" checked>
+                          <input type="checkbox" value="${mem.name}" data-id="${mem}" checked>
                           ${mem.name}
                         </label>
                       </div>`;
@@ -573,7 +584,11 @@ function editModalHide() {
 
 function editCardSaved(event) {
   const modal = event.target.closest('.modal');
-  const cardText = modal.querySelector('.card-text');
+  const cardText = modal.querySelector('.card-text').value;
+const listId = modal.querySelector('.relevent-list-id').textContent;
+const cardId = modal.querySelector('.relevent-card-id').textContent;
+const listsInUi = document.querySelectorAll('.list');
+
 
   editModalHide();
 }
@@ -708,7 +723,7 @@ function editMemberSave(event) {
   const liElm = target.closest('.member-item');
   const inputName = liElm.querySelector('.edit-input-mem').value;
   const name = liElm.querySelector('.member-name');
-const id = liElm.getAttribute('data-id');
+  const id = liElm.getAttribute('data-id');
 
   name.textContent = inputName;
 
@@ -717,7 +732,7 @@ const id = liElm.getAttribute('data-id');
   });
 
   editMemberNameInAppData(appDataRelevantMember, inputName);
-console.log(appData);
+  console.log(appData);
   liElm.classList.toggle('edit-mode');
 }
 
