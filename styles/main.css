@@ -35,6 +35,15 @@ html {
   padding: 0;
 }
 
+.navbar-nav{
+  margin: 0;
+}
+
+.navbar-nav > li > a {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
+
 main{
   height: 100%;
   display: inline-flex;
@@ -171,6 +180,7 @@ main{
   font-weight: 800;
   float: right;
   cursor: default;
+  text-transform: uppercase;
 }
 
 .modal{
