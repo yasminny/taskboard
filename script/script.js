@@ -174,29 +174,30 @@ function changeMembersInAppData(cardId, listId, membersArray) {
 }
 
 function changeCardInListInAppData(cardId, newListId, listId) {
-  console.log(appData);
+  // console.log('in appdata mode', cardId, newListId, listId);
+  // console.log(appData);
   let taskIndex;
   let listIndex;
   // let movedTask;
   for (const list of appData.lists) {
     if (list.id === listId) {
-      taskIndex = Array.from(list.tasks).find((task) => task.id === cardId);
+      taskIndex = Array.from(list.tasks).findIndex((task) => task.id === cardId);
+
       listIndex = appData.lists.indexOf(list);
+      // console.log('list index', listIndex);
     }
-
-
   }
-  console.log(listIndex);
-  console.log(appData.lists[listIndex]);
+  // console.log('list index', listIndex);
+  // console.log(appData.lists[listIndex]);
   const movedTask = appData.lists[listIndex].tasks.splice(taskIndex, 1);
-  console.log(movedTask);
+  // console.log(movedTask);
   for (const list of appData.lists) {
     if (list.id === newListId) {
-      console.log(movedTask);
+      // console.log(movedTask);
       list.tasks.push(movedTask[0]);
     }
   }
-  console.log(appData);
+  // console.log(appData);
 }
 
 /**
@@ -722,7 +723,9 @@ function editCardSaved(event) {
       card.querySelector('.card-content').textContent = cardText;
     }
   }
-
+  changeMembersInAppData(cardId, listId, membersArray);
+  changeCardTextInAppData(cardId, listId, cardText);
+  console.log(appData);
   //save moved card
   let cardLi = document.createElement('li');
   const cardinUI = document.querySelector(`[data-id="${cardId}"]`);
@@ -741,6 +744,7 @@ function editCardSaved(event) {
 
   if(newListId !== listId){
     changeCardInListInAppData(cardId, newListId, listId);
+    // console.log('info sent', cardId, newListId, listId);
 
     const newListInUi = document.querySelector(`[data-id="${newListId}"]`);
 
@@ -759,8 +763,7 @@ function editCardSaved(event) {
 
 
 
-  changeMembersInAppData(cardId, listId, membersArray);
-  changeCardTextInAppData(cardId, listId, cardText);
+
 
   editModalHide();
 }
