@@ -114,6 +114,7 @@ main{
 .panel-body{
   /*padding: 15px 13px;*/
   padding: 0px;
+  margin: 15px 0px;
 }
 
 .add-card{
