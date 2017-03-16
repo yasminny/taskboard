@@ -173,6 +173,27 @@ function changeMembersInAppData(cardId, listId, membersArray) {
   }
 }
 
+function changeCardInListInAppData(cardId, newListId, listId) {
+  let index;
+  let listIndex;
+  // let movedTask;
+  for (const list of appData.lists){
+    if (list.id === listId){
+      index = Array.from(list.tasks).find((task) => task.id === cardId);
+      listIndex = appData.lists.indexOf(list);
+    }
+
+
+  }
+  console.log(listIndex);
+  const movedTask = appData.lists[listIndex].tasks.splice(index, 1);
+  console.log(movedTask);
+  for (const list of appData.lists) {
+    if (list.id === newListId) {
+      list.tasks.push(movedTask[0]);
+    }
+  }
+}
 
 /**
  * --------------------VIew (UI manipulation)-------------------
@@ -456,7 +477,7 @@ function deleteListHandler(event) {
 function addCard(task, target) {
   let ulElm = target.querySelector('.card-list');
   let helper = document.createElement('div');
-  let newCard;
+  // let newCard;
   const idTask = task.id;
   // console.log(idTask);
 
@@ -502,32 +523,35 @@ function addCard(task, target) {
       <div class="member-list-on-card"></div>
   </li>`;
   // taskCounter-${cardNumber}
-  newCard = ulElm.appendChild(helper.querySelector('.card'));
+  const newCard = ulElm.appendChild(helper.querySelector('.card'));
+
   const memberList = newCard.querySelector('div');
   const members = task.members;
+
 
   if (members.length > 0) {
     let memberName;
     for (let mem of members) {
-      // console.log(mem);
       for (const appDataMem of appData.members) {
-        // console.log(appDataMem);
+        console.log(mem, appDataMem.id, 'mem vrs appmem id');
         if (mem === appDataMem.id) {
           // && !appDataMem.relatedCards.includes(cardNumber
           memberName = appDataMem.name;
-          // console.log(appDataMem);
+          console.log(appDataMem.name);
           // appDataMem.relatedCards.push(cardNumber);
+
+          console.log(memberName);
+          let nameArray = memberName.split(' ');
+          let inital = '';
+          nameArray.forEach((arr) => inital += arr[0]);
+          // nameArray[0].split('')[0] + nameArray[1].split('')[0];
+          console.log(nameArray);
+
+          memberList.innerHTML += `<span class="member-inital-on-card label label-primary" title="${memberName}">${inital}</span>`;
+
         }
       }
-
-      const nameArray = memberName.split(' ');
-      let inital = '';
-      nameArray.forEach((arr) => inital += arr[0]);
-      // nameArray[0].split('')[0] + nameArray[1].split('')[0];
-
-      memberList.innerHTML += `<span class="member-inital-on-card label label-primary" title="${memberName}">${inital}</span>`;
     }
-
   }
 
   let editBtn = newCard.querySelector('.edit-card');
@@ -536,6 +560,7 @@ function addCard(task, target) {
 
 function addEmptyNewCard(event) {
   const list = event.target.closest('.list');
+  const listId = list.getAttribute('data-id');
   let ulElm = list.querySelector('.card-list');
   let helper = document.createElement('div');
   const idTask = uuid();
@@ -552,7 +577,7 @@ function addEmptyNewCard(event) {
 
   const title = list.querySelector('.panel-title').textContent;
   let appDataRelevantList = appData.lists.find((list) => {
-    return list.title === title;
+    return list.id === listId;
   });
 
   newCardAddedByUserPushedToAppData(idTask, appDataRelevantList);
@@ -578,10 +603,10 @@ function editModalShow(event) {
   //fills the move to list
   for (const list of lists) {
     if (list.id === listId) {
-      moveToList.innerHTML += `<option value="${list.title}" selected>${list.title}</option>`;
+      moveToList.innerHTML += `<option value="${list.title}" data-id="${list.id}" selected>${list.title}</option>`;
     }
     else {
-      moveToList.innerHTML += `<option value="${list.title}">${list.title}</option>`;
+      moveToList.innerHTML += `<option value="${list.title}" data-id="${list.id}">${list.title}</option>`;
     }
   }
   const appDataRelevantList = appData.lists.find((list) => {
@@ -651,6 +676,7 @@ function editCardSaved(event) {
   const cardsInUi = document.querySelectorAll('.card');
   const membersArray = [];
 
+  //save input text
   const inputs = modal.querySelector('.card-members-list').querySelectorAll('input');
   for (const input of inputs) {
     if (input.checked) {
@@ -658,8 +684,10 @@ function editCardSaved(event) {
     }
   }
 
-  changeMembersInAppData(cardId, listId, membersArray);
 
+
+
+//save members change
   for (const card of cardsInUi) {
     if (card.getAttribute('data-id') === cardId) {
       const memberList = card.querySelector('div');
@@ -693,6 +721,32 @@ function editCardSaved(event) {
     }
   }
 
+  //save moved card
+  let cardLi = document.createElement('li');
+  const cardinUI = document.querySelector(`[data-id="${cardId}"]`);
+  cardLi.innerHTML = cardinUI.innerHTML;
+  cardLi.setAttribute('class', 'card');
+  cardLi.setAttribute('data-id', cardId);
+  console.log(cardinUI, cardLi);
+
+  cardinUI.remove();
+
+  const helper = document.createElement('div');
+  helper.innerHTML = cardLi;
+let listsInModal = modal.querySelectorAll('.lists-options > option');
+const newList = Array.from(listsInModal).find((list) => list.selected == true);
+const newListId = newList.getAttribute('data-id');
+
+const newListInUi = document.querySelector(`[data-id="${newListId}"]`);
+
+const ulElm = newListInUi.querySelector('.card-list');
+//   console.log(ulElm);
+// ulElm.innerHTML += cardLi;
+  ulElm.appendChild(cardLi);
+  // console.log(cardLi);
+
+  changeCardInListInAppData(cardId, newListId, listId);
+  changeMembersInAppData(cardId, listId, membersArray);
   changeCardTextInAppData(cardId, listId, cardText);
 
   editModalHide();
@@ -744,7 +798,9 @@ function initMembersFromData(members) {
     addMember(member.name, member.id);
   }
   const addMemberBtn = document.querySelector('.add-member-btn');
+  const addMemberInput = document.querySelector('.add-member-input');
   addMemberBtn.addEventListener('click', addMemberByUser);
+  addMemberInput.addEventListener('keydown', addMemberByUserEnter)
 
   // const liElm = event.target.closest('.member-item');
   // liElm.classList.toggle('edit-mode');
@@ -796,6 +852,12 @@ function addMemberByUser() {
     newMember.querySelector('.cancel-edit-mem').addEventListener('click', editMemberModeToggle);
     newMember.querySelector('.save-edit-mem').addEventListener('click', editMemberSave);
     return newMember;
+  }
+}
+
+function addMemberByUserEnter(event) {
+  if (event.keyCode === 13) {
+    addMemberByUser();
   }
 }
 
