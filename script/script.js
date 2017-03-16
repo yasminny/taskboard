@@ -177,8 +177,8 @@ function changeCardInListInAppData(cardId, newListId, listId) {
   let index;
   let listIndex;
   // let movedTask;
-  for (const list of appData.lists){
-    if (list.id === listId){
+  for (const list of appData.lists) {
+    if (list.id === listId) {
       index = Array.from(list.tasks).find((task) => task.id === cardId);
       listIndex = appData.lists.indexOf(list);
     }
@@ -685,8 +685,6 @@ function editCardSaved(event) {
   }
 
 
-
-
 //save members change
   for (const card of cardsInUi) {
     if (card.getAttribute('data-id') === cardId) {
@@ -727,25 +725,35 @@ function editCardSaved(event) {
   cardLi.innerHTML = cardinUI.innerHTML;
   cardLi.setAttribute('class', 'card');
   cardLi.setAttribute('data-id', cardId);
-  console.log(cardinUI, cardLi);
+  // console.log(cardinUI, cardLi);
 
-  cardinUI.remove();
+
 
   const helper = document.createElement('div');
   helper.innerHTML = cardLi;
-let listsInModal = modal.querySelectorAll('.lists-options > option');
-const newList = Array.from(listsInModal).find((list) => list.selected == true);
-const newListId = newList.getAttribute('data-id');
+  let listsInModal = modal.querySelectorAll('.lists-options > option');
+  const newList = Array.from(listsInModal).find((list) => list.selected == true);
+  const newListId = newList.getAttribute('data-id');
 
-const newListInUi = document.querySelector(`[data-id="${newListId}"]`);
+  if(newListId !== listId){
+    cardinUI.remove();
 
-const ulElm = newListInUi.querySelector('.card-list');
+    const newListInUi = document.querySelector(`[data-id="${newListId}"]`);
+
+    const ulElm = newListInUi.querySelector('.card-list');
 //   console.log(ulElm);
 // ulElm.innerHTML += cardLi;
-  ulElm.appendChild(cardLi);
-  // console.log(cardLi);
+    const newUiCard = ulElm.appendChild(cardLi);
+    // console.log(cardLi);
+    const editBtn = newUiCard.querySelector('.edit-card');
+    editBtn.addEventListener('click', editModalShow);
 
-  changeCardInListInAppData(cardId, newListId, listId);
+    changeCardInListInAppData(cardId, newListId, listId);
+  }
+
+  
+
+
   changeMembersInAppData(cardId, listId, membersArray);
   changeCardTextInAppData(cardId, listId, cardText);
 
