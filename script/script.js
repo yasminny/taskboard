@@ -174,6 +174,7 @@ function changeMembersInAppData(cardId, listId, membersArray) {
 }
 
 function changeCardInListInAppData(cardId, newListId, listId) {
+  console.log(appData);
   let taskIndex;
   let listIndex;
   // let movedTask;
@@ -195,6 +196,7 @@ function changeCardInListInAppData(cardId, newListId, listId) {
       list.tasks.push(movedTask[0]);
     }
   }
+  console.log(appData);
 }
 
 /**
@@ -738,7 +740,7 @@ function editCardSaved(event) {
   const newListId = newList.getAttribute('data-id');
 
   if(newListId !== listId){
-
+    changeCardInListInAppData(cardId, newListId, listId);
 
     const newListInUi = document.querySelector(`[data-id="${newListId}"]`);
 
@@ -750,7 +752,7 @@ function editCardSaved(event) {
     const editBtn = newUiCard.querySelector('.edit-card');
     editBtn.addEventListener('click', editModalShow);
 
-    changeCardInListInAppData(cardId, newListId, listId);
+
     cardinUI.remove();
   }
 
