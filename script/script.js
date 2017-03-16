@@ -174,22 +174,24 @@ function changeMembersInAppData(cardId, listId, membersArray) {
 }
 
 function changeCardInListInAppData(cardId, newListId, listId) {
-  let index;
+  let taskIndex;
   let listIndex;
   // let movedTask;
   for (const list of appData.lists) {
     if (list.id === listId) {
-      index = Array.from(list.tasks).find((task) => task.id === cardId);
+      taskIndex = Array.from(list.tasks).find((task) => task.id === cardId);
       listIndex = appData.lists.indexOf(list);
     }
 
 
   }
   console.log(listIndex);
-  const movedTask = appData.lists[listIndex].tasks.splice(index, 1);
+  console.log(appData.lists[listIndex]);
+  const movedTask = appData.lists[listIndex].tasks.splice(taskIndex, 1);
   console.log(movedTask);
   for (const list of appData.lists) {
     if (list.id === newListId) {
+      console.log(movedTask);
       list.tasks.push(movedTask[0]);
     }
   }
@@ -533,19 +535,19 @@ function addCard(task, target) {
     let memberName;
     for (let mem of members) {
       for (const appDataMem of appData.members) {
-        console.log(mem, appDataMem.id, 'mem vrs appmem id');
+        // console.log(mem, appDataMem.id, 'mem vrs appmem id');
         if (mem === appDataMem.id) {
           // && !appDataMem.relatedCards.includes(cardNumber
           memberName = appDataMem.name;
-          console.log(appDataMem.name);
+          // console.log(appDataMem.name);
           // appDataMem.relatedCards.push(cardNumber);
 
-          console.log(memberName);
+          // console.log(memberName);
           let nameArray = memberName.split(' ');
           let inital = '';
           nameArray.forEach((arr) => inital += arr[0]);
           // nameArray[0].split('')[0] + nameArray[1].split('')[0];
-          console.log(nameArray);
+          // console.log(nameArray);
 
           memberList.innerHTML += `<span class="member-inital-on-card label label-primary" title="${memberName}">${inital}</span>`;
 
@@ -736,7 +738,7 @@ function editCardSaved(event) {
   const newListId = newList.getAttribute('data-id');
 
   if(newListId !== listId){
-    cardinUI.remove();
+
 
     const newListInUi = document.querySelector(`[data-id="${newListId}"]`);
 
@@ -749,9 +751,10 @@ function editCardSaved(event) {
     editBtn.addEventListener('click', editModalShow);
 
     changeCardInListInAppData(cardId, newListId, listId);
+    cardinUI.remove();
   }
 
-  
+
 
 
   changeMembersInAppData(cardId, listId, membersArray);

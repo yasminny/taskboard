@@ -69,6 +69,7 @@ main{
 }
 
 .card-list {
+  width: 253px;
   max-height: 70vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -104,13 +105,15 @@ main{
   width: 204px;
   min-height: 100px;
   position: relative;
-  margin: 23px 10px;
+  /*margin: 23px 10px;*/
+  margin: 23px auto;
   background-color: white;
   border: blue 1px solid;
 }
 
 .panel-body{
-  padding: 15px 13px;
+  /*padding: 15px 13px;*/
+  padding: 0px;
 }
 
 .add-card{
