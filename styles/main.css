@@ -199,6 +199,11 @@ main{
   margin: 20% auto;
   width: 650px;
 }
+
+.member-in-modal{
+  margin-left: 5px;
+}
+
 .panel-for-members{
   width: 300px;
 }
