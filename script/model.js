@@ -5,7 +5,7 @@
  * ---------------------Model (data manipulation)-------------------------
  */
 
-const appData = {
+let appData = {
   lists: [],
   members: []
 };
@@ -13,8 +13,14 @@ const isAjaxReady = [];
 let taskCounter = 0;
 
 function getAppData() {
-  getBoardData();
-  getMembersData();
+  if(localStorage.getItem(appData) !== undefined){
+    appData = JSON.parse(localStorage.getItem(appData));
+    return true;
+  }
+  else {
+    getBoardData();
+    getMembersData();
+  }
 }
 
 function getBoardData() {
@@ -73,7 +79,8 @@ function updateAjaxState() {
   isAjaxReady.push('true');
 
   if (isAjaxReady.length === 2) {
-    initPageByHash();
+    saveToLocalStorage();
+    return true;
   }
 }
 
@@ -85,15 +92,18 @@ function addNewMemberToAppData(newUser) {
   newAppDataMember.id = uuid();
   const id = newAppDataMember.id;
   appData.members.push(newAppDataMember);
+  saveToLocalStorage();
   return id;
 }
 
 function deleteMemberFromAppData(index) {
   appData.members.splice(index, 1);
+  saveToLocalStorage();
 }
 
 function editMemberNameInAppData(appDataRelevantMember, newName) {
   appDataRelevantMember.name = newName;
+  saveToLocalStorage();
 }
 
 //list
@@ -104,6 +114,7 @@ function newListAddedToAppData(id) {
     id: id
   };
   appData.lists.push(newList);
+  saveToLocalStorage();
 }
 
 function AppDataListTitleEdit(id, newName) {
@@ -112,6 +123,7 @@ function AppDataListTitleEdit(id, newName) {
   });
 
   appDataRelevantList.title = newName;
+  saveToLocalStorage();
 }
 
 function deleteListFromAppData(id) {
@@ -120,13 +132,15 @@ function deleteListFromAppData(id) {
   });
   const index = appData.lists.indexOf(appDataRelevantList);
   appData.lists.splice(index, 1);
+  saveToLocalStorage();
 }
 
 //card
-function addMemberRelatedCardNumbersToAppData(appDataMem, taskCounter, id) {
-  appDataMem.relatedCards.push(taskCounter);
-  appDataMem.relatedCardsId.push(id);
-}
+
+// function addMemberRelatedCardNumbersToAppData(appDataMem, taskCounter, id) {
+//   appDataMem.relatedCards.push(taskCounter);
+//   appDataMem.relatedCardsId.push(id);
+// }
 
 function newCardAddedByUserPushedToAppData(idTask, appDataRelevantList) {
   const cardData = {
@@ -136,6 +150,7 @@ function newCardAddedByUserPushedToAppData(idTask, appDataRelevantList) {
     id: idTask
   };
   appDataRelevantList.tasks.push(cardData);
+  saveToLocalStorage();
 }
 
 //modal
@@ -146,6 +161,7 @@ function deleteCardFromAppData(listId, cardNumToDelete) {
       oldAppDataList.tasks.splice(i, 1);
     }
   }
+  saveToLocalStorage();
 }
 
 function changeCardTextInAppData(cardId, listId, cardText) {
@@ -158,6 +174,7 @@ function changeCardTextInAppData(cardId, listId, cardText) {
       }
     }
   }
+  saveToLocalStorage();
 }
 
 function changeMembersInAppData(cardId, listId, membersArray) {
@@ -170,6 +187,7 @@ function changeMembersInAppData(cardId, listId, membersArray) {
       }
     }
   }
+  saveToLocalStorage();
 }
 
 function changeCardInListInAppData(cardId, newListId, listId) {
@@ -197,24 +215,25 @@ function changeCardInListInAppData(cardId, newListId, listId) {
     }
   }
   // console.log(appData);
+  saveToLocalStorage();
 }
 
-function appDataAddTheCard(members, memberList) {
-  let memberName;
-  for (let mem of members) {
-    for (const appDataMem of appData.members) {
-      if (mem === appDataMem.id) {
-        memberName = appDataMem.name;
-        let nameArray = memberName.split(' ');
-        let inital = '';
-        nameArray.forEach((arr) => inital += arr[0]);
-
-        memberList.innerHTML += `<span class="member-inital-on-card label label-primary" title="${memberName}">${inital}</span>`;
-
-      }
-    }
-  }
-}
+// function appDataAddTheCard(members, memberList) {
+//   let memberName;
+//   for (let mem of members) {
+//     for (const appDataMem of appData.members) {
+//       if (mem === appDataMem.id) {
+//         memberName = appDataMem.name;
+//         let nameArray = memberName.split(' ');
+//         let inital = '';
+//         nameArray.forEach((arr) => inital += arr[0]);
+//
+//         memberList.innerHTML += `<span class="member-inital-on-card label label-primary" title="${memberName}">${inital}</span>`;
+//
+//       }
+//     }
+//   }
+// }
 
 function findAppDataRelevantList(listId) {
   return appData.lists.find((list) => {
@@ -228,4 +247,9 @@ function getAppDataLists() {
 
 function getAppDataMembers() {
   return appData.members;
+}
+
+function saveToLocalStorage() {
+  const localStorageAppData = JSON.stringify(appData);
+  localStorage.setItem('appData', localStorageAppData);
 }

@@ -1,8 +1,6 @@
 /**
  * Created by NEXUS on 26/02/2017.
  */
-
-
 /**
  * --------------------VIew (UI manipulation)-------------------
  */
@@ -10,13 +8,14 @@
 // no hash checked + corrected => create UI function was called.
 function initPageByHash() {
   window.addEventListener('hashchange', changeMainView);
-
+if (getAppData() || updateAjaxState()){
   if (window.location.hash === '') {
     window.location.hash = '#board';
     return;
   }
 
   changeMainView();
+}
 }
 
 //---------------------creating basic UI--------------------------------------
@@ -253,8 +252,13 @@ function titleInputBlurHandler(event) {
 function titleDeleteClickHandler(event) {
   const target = event.target;
   const editElm = target.closest('.dropdown').querySelector('.dropdown-menu');
-  editElm.style.display = 'inline-block';
   const parentElm = target.parentNode;
+  if(editElm.style.display === 'inline-block'){
+    editElm.style.display = 'none';
+  }
+  else {
+    editElm.style.display = 'inline-block';
+  }
   parentElm.blur();
   editElm.focus();
 }
@@ -292,24 +296,23 @@ function addCard(task, target) {
 
   const memberList = newCard.querySelector('div');
   const members = task.members;
-
+const fullMembersList = getAppDataMembers();
 
   if (members.length > 0) {
-    // let memberName;
-    // for (let mem of members) {
-    //   for (const appDataMem of appData.members) {
-    //     if (mem === appDataMem.id) {
-    //       memberName = appDataMem.name;
-    //       let nameArray = memberName.split(' ');
-    //       let inital = '';
-    //       nameArray.forEach((arr) => inital += arr[0]);
-    //
-    //       memberList.innerHTML += `<span class="member-inital-on-card label label-primary" title="${memberName}">${inital}</span>`;
-    //
-    //     }
-    //   }
-    // }
-    appDataAddTheCard(members, memberList);
+    let memberName;
+    for (let mem of members) {
+      for (const appDataMem of fullMembersList) {
+        if (mem === appDataMem.id) {
+          memberName = appDataMem.name;
+          let nameArray = memberName.split(' ');
+          let inital = '';
+          nameArray.forEach((arr) => inital += arr[0]);
+
+          memberList.innerHTML += `<span class="member-inital-on-card label label-primary" title="${memberName}">${inital}</span>`;
+
+        }
+      }
+    }
   }
 
   let editBtn = newCard.querySelector('.edit-card');
