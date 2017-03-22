@@ -490,7 +490,7 @@ function editCardSaved(event) {
   }
   MODEL.changeMembersInAppData(cardId, listId, membersArray);
   MODEL.changeCardTextInAppData(cardId, listId, cardText);
-  console.log(appData);
+
   //save moved card
   let cardLi = document.createElement('li');
   const cardinUI = document.querySelector(`[data-id="${cardId}"]`);
@@ -654,6 +654,7 @@ function deleteMember(event) {
   const index = members.indexOf(appDataRelevantMember);
   MODEL.deleteMemberFromAppData(index);
   liElm.remove();
+  onDeleteShowUnicorn();
 }
 
 function editMemberModeToggle(event) {
@@ -683,6 +684,19 @@ function editMemberSave(event) {
   liElm.classList.toggle('edit-mode');
 }
 
+
+//-----------------jquery----------------
+
+function onDeleteShowUnicorn(){
+  console.log('hello');
+  $('main').after('<div class="unicorn"><img src="https://addyosmani.com/lxjs-slides/images/supercorn.gif"></div>');
+  $('.unicorn').animate({
+    width: '500px',
+    height: '500px'
+  }, 1000, function () {
+    $('.unicorn').fadeOut(800);
+  });
+}
 
 // let num = uuid.v4();
 // console.log(num);

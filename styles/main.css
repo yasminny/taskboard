@@ -283,6 +283,14 @@ li.edit-mode > .edit-member-btn{
   display: none;
 }
 
+.unicorn{
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  height: 50px;
+  width: 50px;
+}
+
 
 @media (min-width: 0) {
   /* Effects the problem regarding the float under 768px, fixes that. */
