@@ -4,18 +4,26 @@
 /**
  * --------------------VIew (UI manipulation)-------------------
  */
+function getAppData() {
+  const cacheData = MODEL.getCacheData();
 
+  if (cacheData) {
+    initPageByHash();
+  }
+  else {
+    MODEL.getBoardData();
+    MODEL.getMembersData();
+  }
+}
 // no hash checked + corrected => create UI function was called.
 function initPageByHash() {
   window.addEventListener('hashchange', changeMainView);
-if (getAppData() || updateAjaxState()){
   if (window.location.hash === '') {
     window.location.hash = '#board';
     return;
   }
 
   changeMainView();
-}
 }
 
 //---------------------creating basic UI--------------------------------------

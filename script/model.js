@@ -4,6 +4,13 @@
 /**
  * ---------------------Model (data manipulation)-------------------------
  */
+const MODEL = (function () {
+
+  /**
+   *
+   * privet
+   */
+
 
 let appData = {
   lists: [],
@@ -12,15 +19,20 @@ let appData = {
 const isAjaxReady = [];
 let taskCounter = 0;
 
-function getAppData() {
-  if(localStorage.getItem(appData) !== undefined){
-    appData = JSON.parse(localStorage.getItem(appData));
+  /**
+   * public
+   */
+
+function getCacheData() {
+  const cacheData = localStorage.getItem('appData');
+
+  if (cacheData) {
+    appData = JSON.parse(cacheData);
+
     return true;
   }
-  else {
-    getBoardData();
-    getMembersData();
-  }
+
+  return false;
 }
 
 function getBoardData() {
@@ -253,3 +265,33 @@ function saveToLocalStorage() {
   const localStorageAppData = JSON.stringify(appData);
   localStorage.setItem('appData', localStorageAppData);
 }
+
+  /**
+   * exposing functions to public
+   */
+
+return{
+  getCacheData,
+  getBoardData,
+  getMembersData,
+  xhrMemLoadHandler,
+  xhrBoardLoadHandler,
+  updateAjaxState,
+  addNewMemberToAppData,
+  deleteMemberFromAppData,
+  editMemberNameInAppData,
+  newListAddedToAppData,
+  AppDataListTitleEdit,
+  deleteListFromAppData,
+  newCardAddedByUserPushedToAppData,
+  deleteCardFromAppData,
+  changeCardTextInAppData,
+  changeMembersInAppData,
+  changeCardInListInAppData,
+  findAppDataRelevantList,
+  getAppDataLists,
+  getAppDataMembers,
+  saveToLocalStorage
+}
+
+})();
