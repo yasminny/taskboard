@@ -37,14 +37,14 @@ function getCacheData() {
 
 function getBoardData() {
   const xhr = new XMLHttpRequest();
-  xhr.addEventListener('load', xhrBoardLoadHandler);
+  xhr.addEventListener('load', MODEL.xhrBoardLoadHandler);
 
   xhr.open('GET', 'assets/board-advanced.json');
   xhr.send();
 }
 function getMembersData() {
   const xhr2 = new XMLHttpRequest();
-  xhr2.addEventListener('load', xhrMemLoadHandler);
+  xhr2.addEventListener('load', MODEL.xhrMemLoadHandler);
 
   xhr2.open('GET', 'assets/members.json');
   xhr2.send();

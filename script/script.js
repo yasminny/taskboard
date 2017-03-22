@@ -94,7 +94,7 @@ function changeMainView() {
     const closeEditBtn = modal.querySelector('.close-modal-btn');
     const saveChangesBtn = modal.querySelector('.save-changes-btn');
     const deleteCardBtn = modal.querySelector('.delete-card-btn');
-    const lists = getAppDataLists();
+    const lists = MODEL.getAppDataLists();
 
     closeEditBtn.addEventListener('click', editModalHide);
     xBtn.addEventListener('click', editModalHide);
@@ -109,7 +109,7 @@ function changeMainView() {
   }
 
   if (hash === '#members') {
-    const members = getAppDataMembers();
+    const members = MODEL.getAppDataMembers();
     navbar.innerHTML = `<li class="board-btn"><a href="#board">Board </a></li><li class="members-btn active"><a href="#members">Members<span class="sr-only">(current)</span></a></li>`;
     main.innerHTML = `<section id="member-section">
   <h1>Taskboard Members</h1>
@@ -180,7 +180,7 @@ function addList(list) {
 //   }
 
   if (!list.title) {
-    newListAddedToAppData(id);
+    MODEL.newListAddedToAppData(id);
   }
 }
 
@@ -238,7 +238,7 @@ function titleInputKeyHandler(event) {
     const value = event.target.value;
     const titleElm = target.parentNode.querySelector('h3');
 
-    AppDataListTitleEdit(id, value);
+    MODEL.AppDataListTitleEdit(id, value);
     titleElm.innerHTML = value;
     target.style.display = 'none';
     titleElm.style.display = 'inline-block';
@@ -282,7 +282,7 @@ function deleteListHandler(event) {
   const listElm = target.closest('.list');
   if (answer) {
     listElm.parentNode.removeChild(listElm);
-    deleteListFromAppData(id);
+    MODEL.deleteListFromAppData(id);
 
   } else {
     const editElm = listElm.querySelector('.dropdown-menu');
@@ -304,7 +304,7 @@ function addCard(task, target) {
 
   const memberList = newCard.querySelector('div');
   const members = task.members;
-const fullMembersList = getAppDataMembers();
+const fullMembersList = MODEL.getAppDataMembers();
 
   if (members.length > 0) {
     let memberName;
@@ -346,9 +346,9 @@ function addEmptyNewCard(event) {
 
   const title = list.querySelector('.panel-title').textContent;
 
-  let appDataRelevantList = findAppDataRelevantList(listId);
+  let appDataRelevantList = MODEL.findAppDataRelevantList(listId);
 
-  newCardAddedByUserPushedToAppData(idTask, appDataRelevantList);
+  MODEL.newCardAddedByUserPushedToAppData(idTask, appDataRelevantList);
 }
 
 function editModalShow(event) {
@@ -366,7 +366,7 @@ function editModalShow(event) {
   modal.querySelector('.relevent-list-id').textContent = listId;
   const editContent = modal.querySelector('.card-text');
   const moveToList = modal.querySelector('.lists-options');
-  const lists = getAppDataLists();
+  const lists = MODEL.getAppDataLists();
 
   //fills the move to list
   for (const list of lists) {
@@ -388,7 +388,7 @@ function editModalShow(event) {
 
   //fills the members list
   const cardMemberList = modal.querySelector('.card-members-list');
-  const membersList = getAppDataMembers();
+  const membersList = MODEL.getAppDataMembers();
   for (const mem of membersList) {
     cardMemberList.innerHTML += `<div class="checkbox member-in-modal">
                         <label>
@@ -413,7 +413,7 @@ function editModalShow(event) {
 }
 
 function findTaskMembersByCardId(cardNumber) {
-  const lists = getAppDataLists();
+  const lists = MODEL.getAppDataLists();
   for (const list of lists) {
     for (const task of list.tasks) {
       if (cardNumber === task.id) {
@@ -456,7 +456,7 @@ function editCardSaved(event) {
 
 //save members change
   for (const card of cardsInUi) {
-    const members = getAppDataMembers();
+    const members = MODEL.getAppDataMembers();
     if (card.getAttribute('data-id') === cardId) {
       const memberList = card.querySelector('div');
       memberList.innerHTML = '';
@@ -488,8 +488,8 @@ function editCardSaved(event) {
       card.querySelector('.card-content').textContent = cardText;
     }
   }
-  changeMembersInAppData(cardId, listId, membersArray);
-  changeCardTextInAppData(cardId, listId, cardText);
+  MODEL.changeMembersInAppData(cardId, listId, membersArray);
+  MODEL.changeCardTextInAppData(cardId, listId, cardText);
   console.log(appData);
   //save moved card
   let cardLi = document.createElement('li');
@@ -508,7 +508,7 @@ function editCardSaved(event) {
   const newListId = newList.getAttribute('data-id');
 
   if(newListId !== listId){
-    changeCardInListInAppData(cardId, newListId, listId);
+    MODEL.changeCardInListInAppData(cardId, newListId, listId);
     // console.log('info sent', cardId, newListId, listId);
 
     const newListInUi = document.querySelector(`[data-id="${newListId}"]`);
@@ -556,7 +556,7 @@ function deleteCard(event) {
     }
   }
   // cardToDelete.remove();
-  deleteCardFromAppData(listId, cardNumToDelete);
+  MODEL.deleteCardFromAppData(listId, cardNumToDelete);
   // const oldAppDataList = appData.lists.find((list) => list.id === listId);
 
   // let indexOfAppDataToDelete;
@@ -615,7 +615,7 @@ function addMemberByUser() {
   const newUser = document.querySelector('.add-member-input').value;
 
   if (newUser !== '') {
-    const id = addNewMemberToAppData(newUser);
+    const id = MODEL.addNewMemberToAppData(newUser);
     helper.innerHTML += `<li class="list-group-item member-item" data-id="${id}"><h3 class="member-name">${newUser}</h3>
 <input type="text" class="edit-input-mem form-control">
 <div class="edit-member-btn">
@@ -645,14 +645,14 @@ function addMemberByUserEnter(event) {
 function deleteMember(event) {
   const target = event.target;
   const liElm = target.closest('.member-item');
-  const members = getAppDataMembers();
+  const members = MODEL.getAppDataMembers();
 
   const id = liElm.getAttribute('data-id');
   let appDataRelevantMember = members.find((member) => {
     return member.id === id;
   });
   const index = members.indexOf(appDataRelevantMember);
-  deleteMemberFromAppData(index);
+  MODEL.deleteMemberFromAppData(index);
   liElm.remove();
 }
 
@@ -670,7 +670,7 @@ function editMemberSave(event) {
   const inputName = liElm.querySelector('.edit-input-mem').value;
   const name = liElm.querySelector('.member-name');
   const id = liElm.getAttribute('data-id');
-  const members = getAppDataMembers();
+  const members = MODEL.getAppDataMembers();
 
   name.textContent = inputName;
 
@@ -678,7 +678,7 @@ function editMemberSave(event) {
     return member.id === id;
   });
 
-  editMemberNameInAppData(appDataRelevantMember, inputName);
+  MODEL.editMemberNameInAppData(appDataRelevantMember, inputName);
   console.log(appData);
   liElm.classList.toggle('edit-mode');
 }
