@@ -29,12 +29,7 @@ function initPageByHash() {
 //---------------------creating basic UI--------------------------------------
 
 function changeMainView() {
-  const hash = window.location.hash;
-  const navbar = document.querySelector('.navbar-nav');
-  const main = document.querySelector('main');
-
-  if (hash === '#board') {
-    main.innerHTML = `<button class="add-list panel panel-info panel-heading" id="list-btn"><h3 class="panel-title">Add a list...</h3>
+  const boardTemplate = `<button class="add-list panel panel-info panel-heading" id="list-btn"><h3 class="panel-title">Add a list...</h3>
     </button>
     <div class="modal fade" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -83,35 +78,7 @@ function changeMainView() {
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->`;
-    navbar.innerHTML = `<li class="active board-btn"><a href="#board">Board <span class="sr-only">(current)</span></a></li><li class="members-btn"><a href="#members">Members</a></li>`;
-    // initListsFromData(appData.lists);
-
-    let addListBtn = document.getElementById('list-btn');
-    addListBtn.addEventListener('click', addList);
-
-    const modal = document.querySelector('.modal');
-    const xBtn = modal.querySelector('span');
-    const closeEditBtn = modal.querySelector('.close-modal-btn');
-    const saveChangesBtn = modal.querySelector('.save-changes-btn');
-    const deleteCardBtn = modal.querySelector('.delete-card-btn');
-    const lists = MODEL.getAppDataLists();
-
-    closeEditBtn.addEventListener('click', editModalHide);
-    xBtn.addEventListener('click', editModalHide);
-    saveChangesBtn.addEventListener('click', editCardSaved);
-    deleteCardBtn.addEventListener('click', deleteCard);
-
-
-// loop over the lists
-    for (const list of lists) {
-      addList(list);
-    }
-  }
-
-  if (hash === '#members') {
-    const members = MODEL.getAppDataMembers();
-    navbar.innerHTML = `<li class="board-btn"><a href="#board">Board </a></li><li class="members-btn active"><a href="#members">Members<span class="sr-only">(current)</span></a></li>`;
-    main.innerHTML = `<section id="member-section">
+  const membersTemplate = `<section id="member-section">
   <h1>Taskboard Members</h1>
   <ul class="list-group members-group">
     <li class="list-group-item add-member input-group-lg">
@@ -122,12 +89,50 @@ function changeMainView() {
     </li>
   </ul>
 </section>`;
+  const hash = window.location.hash;
+  const navbar = document.querySelector('.navbar-nav');
+  const main = document.querySelector('main');
+  const lists = MODEL.getAppDataLists();
+
+  if (hash === '#board') {
+    // create basic board view
+    main.innerHTML = boardTemplate;
+    navbar.innerHTML = `<li class="active board-btn"><a href="#board">Board <span class="sr-only">(current)</span></a></li><li class="members-btn"><a href="#members">Members</a></li>`;
+    createBasicBoardEventListeners();
+
+// loop over the lists
+    for (const list of lists) {
+      addList(list);
+    }
+  }
+
+  if (hash === '#members') {
+    // create basic members view
+    const members = MODEL.getAppDataMembers();
+    navbar.innerHTML = `<li class="board-btn"><a href="#board">Board </a></li><li class="members-btn active"><a href="#members">Members<span class="sr-only">(current)</span></a></li>`;
+    main.innerHTML = membersTemplate;
 
     initMembersFromData(members);
   }
 
 }
 
+function createBasicBoardEventListeners() {
+  let addListBtn = document.getElementById('list-btn');
+  addListBtn.addEventListener('click', addList);
+
+  const modal = document.querySelector('.modal');
+  const xBtn = modal.querySelector('span');
+  const closeEditBtn = modal.querySelector('.close-modal-btn');
+  const saveChangesBtn = modal.querySelector('.save-changes-btn');
+  const deleteCardBtn = modal.querySelector('.delete-card-btn');
+
+
+  closeEditBtn.addEventListener('click', editModalHide);
+  xBtn.addEventListener('click', editModalHide);
+  saveChangesBtn.addEventListener('click', editCardSaved);
+  deleteCardBtn.addEventListener('click', deleteCard);
+}
 
 // ---------------------board UI functions---------------------------------
 
@@ -174,10 +179,6 @@ function addList(list) {
       }
     }
   }
-// // loop over list.tasks
-//   for (const task of list.tasks) {
-//     addCard(task, newList);
-//   }
 
   if (!list.title) {
     MODEL.newListAddedToAppData(id);
@@ -186,17 +187,6 @@ function addList(list) {
 
 function initListTitles(targetList) {
   const targetParent = targetList || document;
-
-  // const addCardBtn = targetParent.getElementsByClassName('card-btn');
-  // // for (const card of addCardBtn) {
-  // //   card.addEventListener('click', function (e) {
-  // //     const emptyCard = {
-  // //       "text": "",
-  // //       "members": []
-  // //     };
-  // //     addCard(emptyCard, e.target.closest('.list'));
-  // //   });
-  // // }
 
   const titleElem = targetParent.querySelectorAll('.list-header h3');
   for (const title of titleElem) {
@@ -555,18 +545,8 @@ function deleteCard(event) {
       card.remove();
     }
   }
-  // cardToDelete.remove();
   MODEL.deleteCardFromAppData(listId, cardNumToDelete);
-  // const oldAppDataList = appData.lists.find((list) => list.id === listId);
-
-  // let indexOfAppDataToDelete;
-  // for (const task of oldAppDataList.tasks) {
-  //   if (task.id === cardNumToDelete) {
-  // console.log(oldAppDataList.tasks);
-  // console.log(typeof oldAppDataList.tasks);
-  // indexOfAppDataToDelete = indexOf(task);
   editModalHide();
-  // }
 }
 
 
@@ -582,9 +562,6 @@ function initMembersFromData(members) {
   const addMemberInput = document.querySelector('.add-member-input');
   addMemberBtn.addEventListener('click', addMemberByUser);
   addMemberInput.addEventListener('keydown', addMemberByUserEnter)
-
-  // const liElm = event.target.closest('.member-item');
-  // liElm.classList.toggle('edit-mode');
 }
 
 function addMember(member, id) {
@@ -683,9 +660,6 @@ function editMemberSave(event) {
   liElm.classList.toggle('edit-mode');
 }
 
-
-// let num = uuid.v4();
-// console.log(num);
 
 /**
  * Init the app
