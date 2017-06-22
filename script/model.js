@@ -1,7 +1,4 @@
 /**
- * Created by NEXUS on 19/03/2017.
- */
-/**
  * ---------------------Model (data manipulation)-------------------------
  */
 const MODEL = (function () {
@@ -10,7 +7,6 @@ const MODEL = (function () {
    *
    * privet
    */
-
 
 let appData = {
   lists: [],
@@ -31,7 +27,6 @@ function getCacheData() {
 
     return true;
   }
-
   return false;
 }
 
@@ -66,11 +61,9 @@ function xhrMemLoadHandler(event) {
     appDataMem.relatedCards = [];
     appDataMem.relatedCardsId = [];
   }
-
-  //
-  //
   updateAjaxState();
 }
+
 function xhrBoardLoadHandler(event) {
   const myXhr = event.target;
   const contentType = myXhr.getResponseHeader('content-type');
@@ -148,12 +141,6 @@ function deleteListFromAppData(id) {
 }
 
 //card
-
-// function addMemberRelatedCardNumbersToAppData(appDataMem, taskCounter, id) {
-//   appDataMem.relatedCards.push(taskCounter);
-//   appDataMem.relatedCardsId.push(id);
-// }
-
 function newCardAddedByUserPushedToAppData(idTask, appDataRelevantList) {
   const cardData = {
     text: '?',
@@ -168,9 +155,9 @@ function newCardAddedByUserPushedToAppData(idTask, appDataRelevantList) {
 //modal
 function deleteCardFromAppData(listId, cardNumToDelete) {
   const oldAppDataList = appData.lists.find((list) => list.id === listId);
-  for (const i in oldAppDataList.tasks) {
-    if (oldAppDataList.tasks[i].id == cardNumToDelete) {
-      oldAppDataList.tasks.splice(i, 1);
+  for (const index in oldAppDataList.tasks) {
+    if (oldAppDataList.tasks[index].id === cardNumToDelete) {
+      oldAppDataList.tasks.splice(index, 1);
     }
   }
   saveToLocalStorage();
@@ -203,49 +190,24 @@ function changeMembersInAppData(cardId, listId, membersArray) {
 }
 
 function changeCardInListInAppData(cardId, newListId, listId) {
-  // console.log('in appdata mode', cardId, newListId, listId);
-  // console.log(appData);
   let taskIndex;
   let listIndex;
-  // let movedTask;
+
   for (const list of appData.lists) {
     if (list.id === listId) {
       taskIndex = Array.from(list.tasks).findIndex((task) => task.id === cardId);
 
       listIndex = appData.lists.indexOf(list);
-      // console.log('list index', listIndex);
     }
   }
-  // console.log('list index', listIndex);
-  // console.log(appData.lists[listIndex]);
   const movedTask = appData.lists[listIndex].tasks.splice(taskIndex, 1);
-  // console.log(movedTask);
   for (const list of appData.lists) {
     if (list.id === newListId) {
-      // console.log(movedTask);
       list.tasks.push(movedTask[0]);
     }
   }
-  // console.log(appData);
   saveToLocalStorage();
 }
-
-// function appDataAddTheCard(members, memberList) {
-//   let memberName;
-//   for (let mem of members) {
-//     for (const appDataMem of appData.members) {
-//       if (mem === appDataMem.id) {
-//         memberName = appDataMem.name;
-//         let nameArray = memberName.split(' ');
-//         let inital = '';
-//         nameArray.forEach((arr) => inital += arr[0]);
-//
-//         memberList.innerHTML += `<span class="member-inital-on-card label label-primary" title="${memberName}">${inital}</span>`;
-//
-//       }
-//     }
-//   }
-// }
 
 function findAppDataRelevantList(listId) {
   return appData.lists.find((list) => {

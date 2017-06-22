@@ -324,7 +324,7 @@ function addEmptyNewCard(event) {
   let helper = document.createElement('div');
   const idTask = uuid();
 
-  helper.innerHTML = `<li class="card taskCounter-${taskCounter}" data-id="${idTask}">
+  helper.innerHTML = `<li class="card taskCounter-${0}" data-id="${idTask}">
       <button type="button" class="edit-card btn btn-info btn-xs" data-toggle="modal" data-target="#myModal">Edit card</button>
       <p class="card-content">?</p>
       <div class="member-list-on-card"></div>
@@ -424,7 +424,6 @@ function editModalHide() {
   const editContent = modal.querySelector('.card-text');
   editContent.textContent = '';
   editContent.value = '';
-
 }
 
 function editCardSaved(event) {
@@ -459,8 +458,6 @@ function editCardSaved(event) {
             if (mem === appDataMem.id) {
               // && !appDataMem.relatedCards.includes(cardNumber
               memberName = appDataMem.name;
-              // console.log(appDataMem);
-              // appDataMem.relatedCards.push(cardNumber);
             }
           }
 
@@ -480,7 +477,7 @@ function editCardSaved(event) {
   }
   MODEL.changeMembersInAppData(cardId, listId, membersArray);
   MODEL.changeCardTextInAppData(cardId, listId, cardText);
-  console.log(appData);
+  // console.log(appData);
   //save moved card
   let cardLi = document.createElement('li');
   const cardinUI = document.querySelector(`[data-id="${cardId}"]`);
@@ -494,7 +491,7 @@ function editCardSaved(event) {
   const helper = document.createElement('div');
   helper.innerHTML = cardLi;
   let listsInModal = modal.querySelectorAll('.lists-options > option');
-  const newList = Array.from(listsInModal).find((list) => list.selected == true);
+  const newList = Array.from(listsInModal).find((list) => list.selected === true);
   const newListId = newList.getAttribute('data-id');
 
   if(newListId !== listId){
@@ -514,11 +511,6 @@ function editCardSaved(event) {
 
     cardinUI.remove();
   }
-
-
-
-
-
 
   editModalHide();
 }
