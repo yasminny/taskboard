@@ -648,7 +648,6 @@ function editMemberSave(event) {
   });
 
   MODEL.editMemberNameInAppData(appDataRelevantMember, inputName);
-  console.log(appData);
   liElm.classList.toggle('edit-mode');
 }
 
